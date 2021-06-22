@@ -1,0 +1,32 @@
+{
+    "success": true,
+    "error": 0,
+    "data": {
+        "size": 25,
+        "total_elements": 3,
+        "total_pages": 1,
+        "empty": false,
+        "first": true,
+        "last": true,
+        "number": 0,
+        "number_of_elements": 3,
+        "content": [
+            {
+                "id": 1,
+                "title": "Системный администратор",
+                "description": "",
+                "member": 1,
+                "acl": "*/admin/*",
+                "rules": ["group/list", "group/new", "group/edit", "group/remove"]
+            },
+            {
+                "id": 2,
+                "title": "Операторы",
+                "description": "",
+                "member": 2,
+                "acl": "*/admin/*",
+                "rules": ["operator/list", "operator/new", "operator/edit", "operator/remove"]
+            }
+        ]
+    }
+}

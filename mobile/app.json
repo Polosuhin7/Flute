@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "flute",
+    "slug": "flute",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.flute.flute",
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyCCIL6IElRINVk6av4vCNuK4H0k3W"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.flute.flute",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCCIL6IElRINVk6av4vCNuK4H0k3W"
+        }
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
