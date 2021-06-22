@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "organizations",
+  "info": {
+    "name": "Organization",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "admin_user": {
+      "plugin": "admin",
+      "model": "user"
+    },
+    "coordinate": {
+      "type": "component",
+      "repeatable": false,
+      "component": "coords.coords",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "users": {
+      "plugin": "admin",
+      "collection": "user"
+    }
+  }
+}
