@@ -1,6 +1,6 @@
 import { useFonts } from "expo-font";
 import { observer, Provider } from "mobx-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 import { Appearance, AppearanceProvider } from "react-native-appearance";
 import Button from "./src/components/buttons/Button";
@@ -12,6 +12,9 @@ import { ThemeProvider } from "./src/providers/ThemeProvider";
 import OrganizationMap from "./src/screens/organization/OrganizationMap";
 import stores from "./src/stores/stores";
 import { Theme } from "./src/types/ITheme";
+import AppLoading from "expo-app-loading";
+import * as Location from "expo-location";
+import * as Permissions from "expo-permissions";
 
 const createStyles = (theme: Theme) =>
     StyleSheet.create({
@@ -19,10 +22,10 @@ const createStyles = (theme: Theme) =>
             backgroundColor: theme.color.layout,
         },
     });
-
+const { app } = stores;
 function App() {
     const styles = useStyles(createStyles);
-
+    const { ready, setLocation, setReady, setError } = app;
     const [loaded] = useFonts({
         Gilroy: require("./assets/fonts/Gilroy-Regular.ttf"),
         GilroyLight: require("./assets/fonts/Gilroy-Light.ttf"),
@@ -30,8 +33,24 @@ function App() {
         GilroySemibold: require("./assets/fonts/Gilroy-Semibold.ttf"),
     });
 
-    if (!loaded) {
-        return null;
+    useEffect(() => {
+        (async () => {
+            try {
+                let { status } = await Location.requestForegroundPermissionsAsync();
+                if (status !== "granted") {
+                    throw "Permission to access location was denied";
+                }
+                let location = await Location.getCurrentPositionAsync({});
+                setLocation(location);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setReady(true);
+            }
+        })();
+    }, []);
+    if (!loaded || !ready) {
+        return <AppLoading />;
     }
 
     return (
@@ -42,8 +61,8 @@ function App() {
                         <StatusBar />
                         <View style={styles.container}>
                             <Button
-                                size="md"
-                                variant="outlined"
+                                size='md'
+                                variant='outlined'
                                 style={{ position: "absolute", top: 150, left: 50, zIndex: 500 }}
                                 text='click'
                                 onPress={() => console.log("none")}

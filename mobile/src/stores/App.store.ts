@@ -1,26 +1,23 @@
 import {makeAutoObservable} from "mobx";
 import {IRootStore} from "./Root.store";
 import { IError } from "../types/IError";
+import { LocationObject } from "expo-location";
 
 export interface IAppStore {
     rootStore: IRootStore;
-    version: string;
     ready: boolean;
     error: IError | null;
-    connection: boolean;
-
+    location: LocationObject;
+    setLocation(location: LocationObject): void;
     setReady(val: boolean): void;
     setError(error: IError | null): void;
-    setVersion(version: string): void;
-    setConnection(state: boolean): void;
 }
 
 class AppStore implements IAppStore {
     rootStore: IRootStore;
     error: IError | null = null;
     ready: boolean = false
-    version: string = "";
-    connection: boolean = true;
+    location: any = []
 
     constructor(rootStore: IRootStore) {
         makeAutoObservable(this);
@@ -31,16 +28,12 @@ class AppStore implements IAppStore {
         this.error = error;
     }
 
+    setLocation = (location: LocationObject): void => {
+        this.location = location;
+    }
+
     setReady = (val: boolean): void => {
         this.ready = val;
-    }
-
-    setVersion = (version: string): void => {
-        this.version = version;
-    }
-
-    setConnection = (state: boolean) => {
-        this.connection = state;
     }
 }
 

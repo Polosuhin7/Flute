@@ -5,10 +5,10 @@ import Bottom from "reanimated-bottom-sheet";
 import { INavigationState } from "../stores/Navigation.store";
 import stores from "../stores/stores";
 import { ESheetState } from "../types/ESheetState";
+import BottomSheet from "./BottomSheet";
 
-const { width, height } = Dimensions.get("window");
 
-interface IBottomSheetProps {
+interface INavBottomSheetProps {
     menu: keyof INavigationState;
     Content: ReactNode;
     Header?: ReactNode;
@@ -17,56 +17,19 @@ interface IBottomSheetProps {
     onClose?(): void;
 }
 
-const HEADER_HEIGTH = 100;
 const {navigation} = stores;
-const NavBottomSheet: React.FC<IBottomSheetProps> = ({ menu, Header, Content, hideClose, fixedHeader, onClose }) => {
-    const ref = React.useRef<any>(null);
+const NavBottomSheet: React.FC<INavBottomSheetProps> = ({ menu, Header, Content, hideClose, fixedHeader, onClose }) => {
     
-    const snapPoints = React.useMemo(() => Header ? [height - 50, height / 2, HEADER_HEIGTH, -1] : [height - 50, height / 2, 0, -1], []);
-    useEffect(() => {
-        ref.current.snapTo(navigation.state[menu]);
-    });
-
     const _onClose = () => {
         if(onClose) {
             onClose()
         } else {
             navigation.setNavigationState(menu, fixedHeader ? ESheetState.HIDE : ESheetState.CLOSE);
-            if(fixedHeader) {
-                ref.current.snapTo(ESheetState.HIDE)
-            }
+            
         }
     }; 
-    const renderHeader = () =>
-        Header ? (
-            <View 
-                style={{
-                    backgroundColor: "tomato",
-                    padding: 16,
-                    height: HEADER_HEIGTH,
-                    borderTopLeftRadius: 10,
-                    borderTopRightRadius: 10,
-                }}>
-                {Header}
-            </View>
-        ) : null;
+   
 
-    const renderContent = () => (
-        <View
-            style={{
-                backgroundColor: "white",
-                padding: 16,
-                height: height - 50,
-            }}>
-            {!hideClose && (
-                <TouchableOpacity onPress={_onClose} style={{ position: "absolute", top: 0, right: 10 }}>
-                    <Text>X</Text>
-                </TouchableOpacity>
-            )}
-            {Content}
-        </View>
-    );
-
-    return <Bottom {...{ ref, snapPoints, renderContent, renderHeader, onCloseEnd: _onClose }} />;
+    return <BottomSheet {...{ state: navigation.state[menu], Content, Header, onClose: _onClose, fixedHeader }} />;
 };
 export default observer(NavBottomSheet);

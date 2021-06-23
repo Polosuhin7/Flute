@@ -1,21 +1,21 @@
-import { toJS } from "mobx";
 import { observer } from "mobx-react";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Dimensions, useColorScheme, View } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import customStyle from "../../../assets/maps-style.json";
 import stores from "../../stores/stores";
 import { ESheetState } from "../../types/ESheetState";
-import customStyle from "../../../assets/maps-style.json";
 const { width, height } = Dimensions.get("window");
 
 const { organization, navigation } = stores;
 
 const OrganizationMap: React.FC = () => {
     const colorScheme = useColorScheme();
-    const { activeOrganization, fetchData, list: data, setActiveOrganization } = organization;
+    const { activeOrganization, fetchData, list, setActiveOrganization } = organization;
     useEffect(() => {
         fetchData();
     }, []);
+
     return (
         <View style={{ flex: 1 }}>
             <MapView
@@ -30,7 +30,7 @@ const OrganizationMap: React.FC = () => {
                 provider={PROVIDER_GOOGLE}
                 style={{ width, height }}
                 customMapStyle={colorScheme === "dark" ? customStyle : []}>
-                {toJS(data).map((organization) => {
+                {list.map((organization) => {
                     const { coordinate, title, id } = organization;
                     return (
                         <Marker
