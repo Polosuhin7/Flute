@@ -28,13 +28,13 @@ const NavBottomSheet: React.FC<IBottomSheetProps> = ({ menu, Header, Content, hi
     });
 
     const _onClose = () => {
-        if(fixedHeader) {
-            ref.current.snapTo(ESheetState.HIDE)
-        }
         if(onClose) {
             onClose()
         } else {
-            navigation.setNavigationState(menu, ESheetState.CLOSE)
+            navigation.setNavigationState(menu, fixedHeader ? ESheetState.HIDE : ESheetState.CLOSE);
+            if(fixedHeader) {
+                ref.current.snapTo(ESheetState.HIDE)
+            }
         }
     }; 
     const renderHeader = () =>

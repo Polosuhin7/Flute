@@ -2,20 +2,23 @@ import { observer } from "mobx-react";
 import React from "react";
 import { Text, View } from "react-native";
 import NavBottomSheet from "../components/NavBottomSheet";
+import Typography from "../components/typograpy/Typography";
+import Menu from "../screens/menu/Menu";
 import OrganizationItem from "../screens/organization/OrganizationItem";
 import OrganizationList from "../screens/organization/OrganizationList";
 import stores from "../stores/stores";
 
-const { navigation } = stores;
+
+const {navigation} = stores;
 const BottomSheetStack = () => {
-    const { state } = navigation;
+    const {state} = navigation
     return (
         <>
             <NavBottomSheet
                 menu='organizationList'
                 hideClose
                 fixedHeader
-                Header={<Text>organization list</Text>}
+                Header={<Typography variant="h4">organization list</Typography>}
                 Content={<OrganizationList />}
             />
             <NavBottomSheet
@@ -25,12 +28,7 @@ const BottomSheetStack = () => {
             />
             <NavBottomSheet
                 menu='menu'
-                // Header={<Text>Menu</Text>}
-                Content={
-                    <View>
-                        <Text>Hello</Text>
-                    </View>
-                }
+                Content={<Menu />}
             />
         </>
     );

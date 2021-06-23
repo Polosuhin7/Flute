@@ -20,8 +20,8 @@ class NavigationStore implements INavigationStore {
 
     _state: INavigationState = {
         organizationList: ESheetState.HIDE,
-        organizationItem: ESheetState.HIDE,
-        menu: ESheetState.HIDE,
+        organizationItem: ESheetState.CLOSE,
+        menu: ESheetState.CLOSE,
     };
 
     @computed
@@ -29,8 +29,8 @@ class NavigationStore implements INavigationStore {
         if (Object.values(this._state).every((val) => val === ESheetState.HIDE)) {
             return {
                 organizationList: ESheetState.HIDE,
-                organizationItem: ESheetState.HIDE,
-                menu: ESheetState.HIDE,
+                organizationItem: ESheetState.CLOSE,
+                menu: ESheetState.CLOSE,
             };
         }
         return  {...this._state};
