@@ -13,23 +13,20 @@ interface INavBottomSheetProps {
     Content: ReactNode;
     Header?: ReactNode;
     hideClose?: boolean;
-    fixedHeader?: boolean
+    snapPoints?: [ESheetState.OPEN, ESheetState.HALF, ESheetState.HIDE, ESheetState.CLOSE];
     onClose?(): void;
 }
 
 const {navigation} = stores;
-const NavBottomSheet: React.FC<INavBottomSheetProps> = ({ menu, Header, Content, hideClose, fixedHeader, onClose }) => {
-    
+const NavBottomSheet: React.FC<INavBottomSheetProps> = ({ menu, Header, Content, hideClose, snapPoints, onClose }) => {
     const _onClose = () => {
         if(onClose) {
             onClose()
         } else {
-            navigation.setNavigationState(menu, fixedHeader ? ESheetState.HIDE : ESheetState.CLOSE);
+            navigation.navigate(menu, ESheetState.CLOSE);
             
         }
-    }; 
-   
-
-    return <BottomSheet {...{ state: navigation.state[menu], Content, Header, onClose: _onClose, fixedHeader }} />;
+    };
+    return <BottomSheet {...{ state: navigation.state[menu], Content, Header, onClose: _onClose, hideClose, snapPoints }} />;
 };
 export default observer(NavBottomSheet);

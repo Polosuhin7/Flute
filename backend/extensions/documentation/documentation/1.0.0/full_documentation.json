@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "06/22/2021 11:53:20 AM"
+    "x-generation-date": "06/25/2021 8:04:44 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -2796,53 +2796,6 @@
           "title": {
             "type": "string"
           },
-          "admin_user": {
-            "required": [
-              "id",
-              "email"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "firstname": {
-                "type": "string"
-              },
-              "lastname": {
-                "type": "string"
-              },
-              "username": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string"
-              },
-              "password": {
-                "type": "string"
-              },
-              "resetPasswordToken": {
-                "type": "string"
-              },
-              "registrationToken": {
-                "type": "string"
-              },
-              "isActive": {
-                "type": "boolean"
-              },
-              "roles": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "blocked": {
-                "type": "boolean"
-              },
-              "preferedLanguage": {
-                "type": "string"
-              }
-            }
-          },
           "coordinate": {
             "type": "object",
             "required": [
@@ -2860,55 +2813,272 @@
               }
             }
           },
-          "users": {
+          "images": {
             "type": "array",
             "items": {
               "required": [
                 "id",
-                "email"
+                "name",
+                "hash",
+                "mime",
+                "size",
+                "url",
+                "provider"
               ],
               "properties": {
                 "id": {
                   "type": "string"
                 },
-                "firstname": {
+                "name": {
                   "type": "string"
                 },
-                "lastname": {
+                "alternativeText": {
                   "type": "string"
                 },
-                "username": {
+                "caption": {
                   "type": "string"
                 },
-                "email": {
+                "width": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                },
+                "formats": {
+                  "type": "object"
+                },
+                "hash": {
                   "type": "string"
                 },
-                "password": {
+                "ext": {
                   "type": "string"
                 },
-                "resetPasswordToken": {
+                "mime": {
                   "type": "string"
                 },
-                "registrationToken": {
+                "size": {
+                  "type": "number"
+                },
+                "url": {
                   "type": "string"
                 },
-                "isActive": {
-                  "type": "boolean"
+                "previewUrl": {
+                  "type": "string"
                 },
-                "roles": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
+                "provider": {
+                  "type": "string"
                 },
-                "blocked": {
-                  "type": "boolean"
+                "provider_metadata": {
+                  "type": "object"
                 },
-                "preferedLanguage": {
+                "related": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
                   "type": "string"
                 }
               }
             }
+          },
+          "description": {
+            "type": "string"
+          },
+          "congestion_of_space": {
+            "type": "string",
+            "enum": [
+              "empty",
+              "some",
+              "loaded",
+              "fully"
+            ]
+          },
+          "average_check": {
+            "type": "integer"
+          },
+          "address": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "country": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "street": {
+                "type": "string"
+              },
+              "building": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
+          "prices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "bar_style": {
+            "type": "string"
+          },
+          "shedule": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "monday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              },
+              "tuesday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              },
+              "wednesday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              },
+              "thursday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              },
+              "friday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              },
+              "saturday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              },
+              "sunday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "phone": {
+            "type": "string"
           },
           "localizations": {
             "type": "array",
@@ -2923,17 +3093,44 @@
                 "title": {
                   "type": "string"
                 },
-                "admin_user": {
-                  "type": "string"
-                },
                 "coordinate": {
                   "type": "component"
                 },
-                "users": {
+                "images": {
                   "type": "array",
                   "items": {
                     "type": "string"
                   }
+                },
+                "description": {
+                  "type": "string"
+                },
+                "congestion_of_space": {
+                  "type": "string",
+                  "enum": [
+                    "empty",
+                    "some",
+                    "loaded",
+                    "fully"
+                  ]
+                },
+                "average_check": {
+                  "type": "integer"
+                },
+                "address": {
+                  "type": "component"
+                },
+                "prices": {
+                  "type": "component"
+                },
+                "bar_style": {
+                  "type": "string"
+                },
+                "shedule": {
+                  "type": "component"
+                },
+                "phone": {
+                  "type": "string"
                 },
                 "localizations": {
                   "type": "array",
@@ -2970,9 +3167,6 @@
           "title": {
             "type": "string"
           },
-          "admin_user": {
-            "type": "string"
-          },
           "coordinate": {
             "type": "object",
             "required": [
@@ -2990,11 +3184,202 @@
               }
             }
           },
-          "users": {
+          "description": {
+            "type": "string"
+          },
+          "congestion_of_space": {
+            "type": "string",
+            "enum": [
+              "empty",
+              "some",
+              "loaded",
+              "fully"
+            ]
+          },
+          "average_check": {
+            "type": "integer"
+          },
+          "address": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "country": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "street": {
+                "type": "string"
+              },
+              "building": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
+          "prices": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "object",
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "integer"
+                }
+              }
             }
+          },
+          "bar_style": {
+            "type": "string"
+          },
+          "shedule": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "monday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              },
+              "tuesday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              },
+              "wednesday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              },
+              "thursday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              },
+              "friday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              },
+              "saturday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              },
+              "sunday": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time_from": {
+                    "type": "string"
+                  },
+                  "time_to": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "phone": {
+            "type": "string"
           },
           "localizations": {
             "type": "array",

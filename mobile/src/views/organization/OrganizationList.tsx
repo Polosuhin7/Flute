@@ -10,12 +10,14 @@ import { Theme } from "../../types/ITheme";
 import { IOrganization } from "../../types/organization/IOrganization";
 import {getDistance} from 'geolib';
 import { getGeoDistance } from "../../utils/getGeoDistance";
+import Divider from "../../components/divider/Divider";
+import { textToOrganizationClosed } from "../../utils/orgnizationSheduleHelper";
 
 const createStyles = (theme: Theme) =>
     StyleSheet.create({
         container: {},
         item: {
-            marginHorizontal: theme.spacing.triple,
+            // marginHorizontal: theme.spacing.triple,
             paddingVertical: theme.spacing.double,
             borderBottomWidth: 1,
             borderColor: theme.color.border,
@@ -57,7 +59,7 @@ const OrganizationList: React.FC<any> = () => {
             renderItem={({ item }: ListRenderItemInfo<IOrganization>) => (
                 <TouchableOpacity onPress={() => {
                     organization.setActiveOrganization(item);
-                    navigation.setNavigationState('organizationItem', ESheetState.HALF);
+                    navigation.navigate('organizationItem', ESheetState.HALF);
                 }}>
                     <View style={styles.item} key={item.id + item.title}>
                         <View style={styles.titleContainer}>
@@ -69,13 +71,9 @@ const OrganizationList: React.FC<any> = () => {
                             <View>
                                 <Typography style={styles.destinatioText}>{getGeoDistance(location, item.coordinate)} км</Typography>
                             </View>
-                            <Typography style={styles.dot}>•</Typography>
+                            <Divider variant="dot" />
                             <View>
-                                <Typography style={styles.workhoursText}>Работает до 04:00</Typography>
-                            </View>
-                            <Typography style={styles.dot}>•</Typography>
-                            <View>
-                                <Typography style={styles.pricesText}>150 - 200 р</Typography>
+                            {item.shedule && <Typography style={styles.workhoursText}>{textToOrganizationClosed(item.shedule)}</Typography>}
                             </View>
                         </View>
                     </View>

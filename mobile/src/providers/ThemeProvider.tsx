@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Appearance } from 'react-native-appearance';
 import { AvailableThemes, Themes } from '../themes';
 import { LightTheme } from '../themes/LightTheme';
 import { Theme } from '../types/ITheme';
@@ -32,6 +33,16 @@ export const ThemeProvider = React.memo<Props>((props) => {
       return newTheme;
     });
   }, []);
+
+  useEffect(() => {
+    let subscription = Appearance.addChangeListener(({ colorScheme }) => {
+        if (colorScheme === "no-preference") return;
+        setTheme(colorScheme);
+    });
+
+    return () => subscription.remove();
+}, []);
+
 
   const MemoizedValue = React.useMemo(() => ({
     theme: Themes[theme],

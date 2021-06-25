@@ -1,16 +1,22 @@
-import { action, computed, makeAutoObservable } from "mobx";
+import { action, computed, makeAutoObservable, toJS } from "mobx";
 import { ESheetState } from "../types/ESheetState";
-
+import { debounce } from "../utils/debounce";
 
 export interface INavigationState {
     organizationList: ESheetState;
     organizationItem: ESheetState;
     menu: ESheetState;
 }
-
+const initialState = {
+    organizationList: ESheetState.HIDE,
+    organizationItem: ESheetState.CLOSE,
+    menu: ESheetState.CLOSE,
+};
 export interface INavigationStore {
     state: INavigationState;
-    setNavigationState(view: keyof INavigationState, state: ESheetState): void;
+    navigate(view: keyof INavigationState, state?: ESheetState): void;
+    goBack(): void;
+    closeAll():void
 }
 
 class NavigationStore implements INavigationStore {
@@ -24,22 +30,32 @@ class NavigationStore implements INavigationStore {
         menu: ESheetState.CLOSE,
     };
 
+    history: INavigationState[] = [];
+
     @computed
     get state() {
         if (Object.values(this._state).every((val) => val === ESheetState.HIDE)) {
-            return {
-                organizationList: ESheetState.HIDE,
-                organizationItem: ESheetState.CLOSE,
-                menu: ESheetState.CLOSE,
-            };
+            return initialState;
         }
-        return  {...this._state};
-       }
+        return { ...this._state };
+    }
 
     @action
-    setNavigationState = (view: keyof INavigationState, state: ESheetState) => {
+    closeAll = () => {
+        this._state = initialState;
+    }
+
+    @action
+    goBack = debounce(() => {
+        console.log('gobakc', this.history.pop());
+        this._state = this.history.pop() || initialState;
+    }, 1000)
+
+    @action
+    navigate = (view:keyof INavigationState, state = ESheetState.OPEN) => {
+        this.history.push({...this._state});
         this._state[view] = state;
-    };
+    }
 }
 
 export default NavigationStore;

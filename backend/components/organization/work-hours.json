@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_organization_work_hours",
+  "info": {
+    "name": "work_hours",
+    "icon": "hourglass",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "time_from": {
+      "type": "time"
+    },
+    "time_to": {
+      "type": "time"
+    }
+  }
+}

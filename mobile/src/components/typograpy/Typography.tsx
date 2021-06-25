@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, Text, TextStyle } from "react-native";
 import { useStyles } from "../../hooks/useStyles";
 import { Theme } from "../../types/ITheme";
@@ -7,6 +7,10 @@ const createStyles = (theme: Theme) =>
     StyleSheet.create({
         base: {
             fontFamily: "Gilroy",
+            color: theme.color.text
+        },
+        bold: {
+            fontFamily: 'GilroySemibold'
         },
         small: {
             fontSize: theme.fontSize.small,
@@ -51,11 +55,18 @@ type TextVariant = "small" | "body" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | 
 export interface TypographyProps {
     style?: TextStyle | TextStyle[];
     variant?: TextVariant
+    bold?: boolean;
 }
-const Typography: React.FC<TypographyProps> = ({ style = {}, variant = 'body', children }) => {
+const Typography: React.FC<TypographyProps> = ({ style = {}, variant = 'body', bold,  children }) => {
     const styles = useStyles(createStyles);
-
-    return <Text style={[styles.base, styles[variant],  style]}>{children}</Text>;
+    const textSyles = useMemo(() => {
+        const _styles = [styles.base, styles[variant],  style];
+        if(bold) {
+            _styles.push(styles.bold);
+        }
+        return _styles
+    }, [style])
+    return <Text style={textSyles}>{children}</Text>;
 };
 
 export default Typography;

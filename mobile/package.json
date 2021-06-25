@@ -8,10 +8,12 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.13.0",
     "axios": "^0.21.1",
     "expo": "~41.0.1",
     "expo-app-loading": "^1.0.3",
     "expo-font": "~9.1.0",
+    "expo-linking": "~2.2.3",
     "expo-localization": "~10.1.0",
     "expo-location": "~12.0.4",
     "expo-permissions": "~12.0.1",
@@ -19,6 +21,7 @@
     "geolib": "^3.3.1",
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
+    "moment": "^2.29.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",

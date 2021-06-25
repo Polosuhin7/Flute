@@ -24,10 +24,6 @@
         }
       }
     },
-    "admin_user": {
-      "plugin": "admin",
-      "model": "user"
-    },
     "coordinate": {
       "type": "component",
       "repeatable": false,
@@ -38,9 +34,97 @@
         }
       }
     },
-    "users": {
-      "plugin": "admin",
-      "collection": "user"
+    "images": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "richtext"
+    },
+    "congestion_of_space": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "empty",
+        "some",
+        "loaded",
+        "fully"
+      ]
+    },
+    "average_check": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "biginteger"
+    },
+    "address": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "organization.address"
+    },
+    "prices": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "organization.prices"
+    },
+    "bar_style": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "shedule": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "organization.shedule"
+    },
+    "phone": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
     }
   }
 }

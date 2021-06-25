@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_organization_addresses",
+  "info": {
+    "name": "address",
+    "icon": "address-book"
+  },
+  "options": {},
+  "attributes": {
+    "country": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "street": {
+      "type": "string"
+    },
+    "building": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    }
+  }
+}

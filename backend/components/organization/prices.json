@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_organization_prices",
+  "info": {
+    "name": "prices",
+    "icon": "dollar-sign"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "price": {
+      "type": "integer"
+    }
+  }
+}

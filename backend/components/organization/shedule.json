@@ -1,0 +1,46 @@
+{
+  "collectionName": "components_organization_shedules",
+  "info": {
+    "name": "shedule",
+    "icon": "house-damage",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "monday": {
+      "type": "component",
+      "repeatable": false,
+      "component": "organization.work-hours"
+    },
+    "tuesday": {
+      "type": "component",
+      "repeatable": false,
+      "component": "organization.work-hours"
+    },
+    "wednesday": {
+      "type": "component",
+      "repeatable": false,
+      "component": "organization.work-hours"
+    },
+    "thursday": {
+      "type": "component",
+      "repeatable": false,
+      "component": "organization.work-hours"
+    },
+    "friday": {
+      "type": "component",
+      "repeatable": false,
+      "component": "organization.work-hours"
+    },
+    "saturday": {
+      "type": "component",
+      "repeatable": false,
+      "component": "organization.work-hours"
+    },
+    "sunday": {
+      "type": "component",
+      "repeatable": false,
+      "component": "organization.work-hours"
+    }
+  }
+}
