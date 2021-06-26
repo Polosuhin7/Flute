@@ -115,8 +115,8 @@ const Button: React.FC<ButtonProps> = ({ onPress, text, icon, fluid, style, vari
         onPress({});
     }
     return (
-        <Pressable
-            // activeOpacity={0.7}
+        <TouchableOpacity
+            activeOpacity={0.7}
             style={containerStyle}
             onPress={_onPress}>
             {text && <Typography style={[textSizeStyle[size], textStyles[variant]]}>{text}</Typography>}
@@ -126,7 +126,7 @@ const Button: React.FC<ButtonProps> = ({ onPress, text, icon, fluid, style, vari
                     name={icon}
                 />
             )}
-        </Pressable>
+        </TouchableOpacity>
     );
 };
 

@@ -1,3 +1,4 @@
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import * as Linking from "expo-linking";
 import I18n from "i18n-js";
 import { observer } from "mobx-react";
@@ -129,7 +130,7 @@ const OrganizationItem: React.FC<any> = () => {
     };
 
     return (
-        <>
+        <BottomSheetScrollView>
             <Typography style={styles.title} variant='h3'>
                 {activeOrganization?.title}
             </Typography>
@@ -216,7 +217,7 @@ const OrganizationItem: React.FC<any> = () => {
                     {activeOrganization?.address?.building}
                 </Typography>
             </View>
-        </>
+        </BottomSheetScrollView>
     );
 };
 
