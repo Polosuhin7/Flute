@@ -1,7 +1,7 @@
 import * as Localization from 'expo-localization';
 import axios from "axios";
 import conf from "../config";
-const _locale = Localization.locale.includes('ru') ? 'ru-RU' : 'en';
+const _locale = Localization.locale.includes('ru') ? 'ru' : 'en';
 
 axios.interceptors.request.use(async (config) => {
     config.baseURL = conf.baseUrl;

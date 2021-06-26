@@ -47,13 +47,15 @@ class NavigationStore implements INavigationStore {
 
     @action
     goBack = debounce(() => {
-        console.log('gobakc', this.history.pop());
         this._state = this.history.pop() || initialState;
     }, 1000)
 
     @action
     navigate = (view:keyof INavigationState, state = ESheetState.OPEN) => {
         this.history.push({...this._state});
+        if(view === 'organizationItem') {
+            this._state['organizationList'] = ESheetState.CLOSE;
+        }
         this._state[view] = state;
     }
 }

@@ -1,6 +1,7 @@
-import React, { ReactNode, useEffect } from "react";
+import * as React from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import Bottom from "reanimated-bottom-sheet";
+import Bottom from "@gorhom/bottom-sheet";
 import { useStyles } from "../hooks/useStyles";
 import { ESheetState } from "../types/ESheetState";
 import { Theme } from "../types/ITheme";
@@ -14,28 +15,25 @@ const createStyle = (theme: Theme) =>
         container: {
             backgroundColor: theme.color.layout,
         },
-        header: {
-            backgroundColor: theme.color.layout,
-            // backgroundColor: 'red',
-            height: HEADER_HEIGHT,
-            paddingVertical: theme.spacing.double,
-            paddingHorizontal: theme.spacing.triple,
-        },
-        headerText: {
-            color: theme.color.secondary,
-        },
         content: {
-            minHeight: height,
-            paddingHorizontal: theme.spacing.triple,
+            backgroundColor: theme.color.layout,
+            paddingHorizontal: theme.spacing.double,
+            borderTopRightRadius: theme.radius.double,
+            borderTopLeftRadius: theme.radius.double,
+        },
+        lineContainer: {
+            paddingTop: theme.spacing.small,
+            paddingBottom: theme.spacing.small,
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         line: {
-            position: "absolute",
-            top: 10,
-            left: width / 2 - 25,
             width: 50,
             height: 3,
             backgroundColor: theme.color.border,
             borderRadius: theme.radius.double,
+            marginVertical: theme.spacing.double,
+            marginHorizontal: 'auto'
         },
         closeButton: {
             position: "absolute",
@@ -46,58 +44,39 @@ const createStyle = (theme: Theme) =>
 export interface IBottomSheetProps {
     Content: ReactNode;
     state: ESheetState;
-    Header?: ReactNode;
     hideClose?: boolean;
-    onClose?(): void;
-    snapPoints?: [ESheetState.OPEN, ESheetState.HALF, ESheetState.HIDE, ESheetState.CLOSE];
+    onChange?(state: number): void;
+    snapPoints?: string|number[]
 }
 
 const BottomSheet: React.FC<IBottomSheetProps> = ({
-    Header,
     Content,
     state,
     hideClose,
     snapPoints: _snapPoints,
-    onClose,
+    onChange,
 }) => {
     const styles = useStyles(createStyle);
-    const ref = React.useRef<any>(null);
-    const snapPoints = React.useMemo(() => {
-        if(_snapPoints) {
-            return _snapPoints
-        }
-        return Header ? [height - 50, height / 2, HEADER_HEIGHT, -1] : [height - 50, height / 2, 0, -1]
-    }, []);
+    const ref = useRef<Bottom>(null);
+    const snapPoints = React.useMemo(() => _snapPoints, []);
+
     useEffect(() => {
-        ref.current.snapTo(state);
-    });
+        ref.current?.snapTo(state)
+    }, [state]);
+    const _onChange = (state: number) => {
+        onChange && onChange(state);
+    }
+    
 
-    const _onClose = () => {
-        onClose && onClose();
-    };
-    const renderHeader = () =>
-     (
-        <View style={[styles.header, {height: !Header ? 25 : styles.header.height}]}>
-        {!hideClose && state !== ESheetState.HIDE && (
-            <IconButton
-                style={styles.closeButton}
-                icon='times'
-                variant='secondary'
-                size='xs'
-                onPress={_onClose}
-            />
-        )}
-        <View style={styles.line} />
-        {Header}
-    </View>
-     )
-
-    const renderContent = () => (
-        <View style={[styles.container, styles.content]}>
+    return (
+        <Bottom
+            handleComponent={() => <View style={styles.lineContainer}><View style={styles.line}/></View>}
+            backgroundComponent={() => <View  />}
+            style={styles.content}
+            onChange={_onChange}
+            {...{ ref, index: state, snapPoints }}>
             {Content}
-        </View>
+        </Bottom>
     );
-
-    return <Bottom {...{ ref, snapPoints, renderContent, renderHeader, onCloseEnd: _onClose }} />;
 };
 export default BottomSheet;

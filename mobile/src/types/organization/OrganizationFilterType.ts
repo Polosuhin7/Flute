@@ -1,0 +1,1 @@
+export type OrganizationFilterType = 'favorite' | 'open-now' | ''

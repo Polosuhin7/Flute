@@ -1,48 +1,36 @@
 import React from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { Dimensions, StatusBar, StyleSheet, View } from "react-native";
+import Button from "../components/buttons/Button";
 import IconButton from "../components/buttons/IconButton";
 import { useStyles } from "../hooks/useStyles";
 import BottomSheetStack from "../navigation/BottomSheetStack";
 import { useTheme } from "../providers/ThemeProvider";
-import stores from "../stores/stores";
-import { ESheetState } from "../types/ESheetState";
 import { Theme } from "../types/ITheme";
 import OrganizationMap from "../views/organization/OrganizationMap";
-const {navigation} = stores;
+
+const { height } = Dimensions.get("window");
 const createStyles = (theme: Theme) =>
     StyleSheet.create({
         container: {
             backgroundColor: theme.color.layout,
         },
-        menutButton: {
+        menuButton: {
             position: "absolute",
-            top: 75,
+            top: 175,
             left: 15,
-            zIndex: 500,
+            zIndex: 100500,
         },
     });
 
 const Main: React.FC<any> = () => {
-    const {navigate} = navigation
     const styles = useStyles(createStyles);
-    const { setTheme } = useTheme();
+    const { theme, setTheme } = useTheme();
 
-    const openMenu = () => {
-        navigate('menu')
-    }
+    const barStyle = theme.id === "dark" ? "light-content" : "dark-content";
     return (
         <>
-            <StatusBar />
-            <View style={styles.container}>
-                <IconButton
-                    size='md'
-                    variant='secondary'
-                    style={styles.menutButton}
-                    icon='list'
-                    onPress={openMenu}
-                />
-                <OrganizationMap />
-            </View>
+            <StatusBar barStyle={barStyle} />
+            <OrganizationMap />
             <BottomSheetStack />
         </>
     );

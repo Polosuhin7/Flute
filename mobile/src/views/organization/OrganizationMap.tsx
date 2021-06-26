@@ -39,14 +39,20 @@ const createStyle = (theme: Theme) =>
             top: 75,
             right: 15,
             zIndex: 500,
-        }
+        },
+        menuButton: {
+            position: "absolute",
+            top: 75,
+            left: 15,
+            zIndex: 500,
+        },
     });
 
 let _mapView: MapView | null;
 const OrganizationMap: React.FC = () => {
-    const { theme } = useTheme();
+    const { theme, setTheme } = useTheme();
+    const colorScheme = theme.id;
     const styles = useStyles(createStyle);
-    const colorScheme = useColorScheme();
     const { activeOrganization, fetchData, list, setActiveOrganization } = organization;
     const {
         location: { coords: initialCoords },
@@ -58,7 +64,7 @@ const OrganizationMap: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (activeOrganization) {
+        if (activeOrganization?.coordinate.latitude) {
             moveTo(activeOrganization.coordinate);
         }
     }, [activeOrganization?.id]);
@@ -71,10 +77,9 @@ const OrganizationMap: React.FC = () => {
 
     const setUserCurrentLocation = async () => {
         try {
-            const location = await Location.getCurrentPositionAsync({});
-            setLocation(location);
-            moveTo(location.coords);
-            navigation.closeAll();
+            moveTo(app.location.coords);
+            setLocation(await Location.getCurrentPositionAsync({}));
+            // navigation.closeAll();
         } catch(error) {
             
         }
@@ -83,6 +88,23 @@ const OrganizationMap: React.FC = () => {
     
     return (
         <View style={styles.container}>
+            {theme.id === "dark" ? (
+                <IconButton
+                    size='md'
+                    variant='secondary'
+                    style={styles.menuButton}
+                    icon='sun'
+                    onPress={() => setTheme("light")}
+                />
+            ) : (
+                <IconButton
+                    size='md'
+                    variant='secondary'
+                    style={styles.menuButton}
+                    icon='moon'
+                    onPress={() => setTheme("dark")}
+                />
+            )}
             <IconButton
                 variant="secondary"
                 style={styles.currentLocationButton}
@@ -93,29 +115,30 @@ const OrganizationMap: React.FC = () => {
                 ref={(ref) => {
                     _mapView = ref;
                 }}
-                region={{ ...initialCoords, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}
+                region={{ ...initialCoords, latitudeDelta: 0.922, longitudeDelta: 0.421 }}
                 minZoomLevel={2}
                 zoomEnabled
                 showsUserLocation
+                showsCompass={false}
+                showsMyLocationButton={false}
                 zoomControlEnabled
                 provider={PROVIDER_GOOGLE}
                 style={styles.map}
                 customMapStyle={colorScheme === "dark" ? customStyle : []}>
                 {list.map((organization) => {
-                    const { coordinate, title, id } = organization;
                     return (
                         <Marker
                             onPress={() => {
                                 setActiveOrganization(organization);
                                 navigation.navigate("organizationItem", ESheetState.HALF);
                             }}
-                            key={title + id}
-                            {...{ coordinate }}>
+                            key={organization.title + organization.id}
+                            {...{ coordinate: organization.coordinate }}>
                             <View
                                 style={[
                                     styles.marker,
                                     {
-                                        backgroundColor: activeOrganization
+                                        backgroundColor: activeOrganization?.id === organization.id
                                             ? theme.color.active
                                             : theme.color.primary,
                                     },

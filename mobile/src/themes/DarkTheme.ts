@@ -11,6 +11,7 @@ export const DarkTheme: Theme = {
     layout: '#121212',
     text: '#fff',
     active: '#ff3f80',
+    activeBlur: 'rgba(255, 63, 128, 0.3)',
     border: '#424242'
   },
 };

@@ -3,6 +3,8 @@ import {action, computed, makeAutoObservable, observable, runInAction, toJS} fro
 import {IRootStore} from "./Root.store";
 import { IError } from "../types/IError";
 import { API } from "../models";
+import { OrganizationFilterType } from '../types/organization/OrganizationFilterType';
+
 
 export interface IOrganizationStore {
     error: IError | null;
@@ -10,6 +12,8 @@ export interface IOrganizationStore {
     loading: boolean;
     activeOrganization: IOrganization | null;
     isLiked: boolean;
+    filter: OrganizationFilterType;
+    toogleFileter(filter: OrganizationFilterType): void;
     setActiveOrganization(organization: IOrganization): void
     toggleLike(): void
     fetchData(): void
@@ -27,6 +31,7 @@ class OrganizationStore implements IOrganizationStore {
     error: IError | null = null;
     data: IOrganization[] = [];
     loading: boolean = false;
+    filter: 'favorite' | 'open-now' | '' = '';
     activeOrganization: IOrganization | null = null
     favoriteOrganizations: IOrganization[] = []
 
@@ -44,7 +49,12 @@ class OrganizationStore implements IOrganizationStore {
     }
 
     @action
-    getFavoriteOrganizations = async () => {
+    toogleFileter = (filter: OrganizationFilterType) => {
+        this.filter = filter === this.filter ? '' : filter;
+        this.fetchData();
+    }
+    @action
+    private getFavoriteOrganizations = async () => {
         try {
             this.loading = true;
             const data = await this.model.getFavorites();
@@ -62,12 +72,12 @@ class OrganizationStore implements IOrganizationStore {
     }
     @action
     toggleLike = async () => {
-        if(!this.activeOrganization) return;
-
+        // TODO: КОСТЫЛЬ где у activeOrganization перетерается поле coordinate
+        const findedOrganization = this.list.find(({id}) => id === this.activeOrganization?.id)
+        if(!findedOrganization) return;
         try {
             this.loading = true;
-            const data = await this.model.toggleFavorite(this.activeOrganization);
-            console.log(data.length)
+            const data = await this.model.toggleFavorite(findedOrganization);
             runInAction(() => {
                 this.favoriteOrganizations = data;
             })
@@ -95,7 +105,7 @@ class OrganizationStore implements IOrganizationStore {
     fetchData = async () => {
         try {
             this.loading = true;
-            const data = await this.model.getList();
+            const data = await this.model.getFilteredData(this.filter);
             runInAction(() => {
                 this.data = toJS(data);
                 

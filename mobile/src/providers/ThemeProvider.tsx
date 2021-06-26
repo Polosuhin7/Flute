@@ -3,7 +3,7 @@ import { Appearance } from 'react-native-appearance';
 import { AvailableThemes, Themes } from '../themes';
 import { LightTheme } from '../themes/LightTheme';
 import { Theme } from '../types/ITheme';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 interface ProvidedValue {
   theme: Theme;
   setTheme: (theme: AvailableThemes) => void;
@@ -24,14 +24,17 @@ export interface Props {
 export const ThemeProvider = React.memo<Props>((props) => {
   const [theme, setTheme] = React.useState<AvailableThemes>(props.theme);
 
-  const SetThemeCallback = React.useCallback((newTheme: AvailableThemes) => {
+  const SetThemeCallback = React.useCallback(async (newTheme: AvailableThemes) => {
     setTheme((currentTheme: AvailableThemes) => {
       if (currentTheme === newTheme) {
         return currentTheme;
       }
-
       return newTheme;
     });
+    try {
+      await AsyncStorage.setItem('app-theme', newTheme);
+    } catch(error) {
+    }
   }, []);
 
   useEffect(() => {

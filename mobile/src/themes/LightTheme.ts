@@ -11,6 +11,7 @@ export const LightTheme: Theme = {
     layout: '#e7e7e7',
     text: '#000',
     active: '#ff3f80',
+    activeBlur: 'rgba(255, 63, 128, 0.3)',
     border: '#424242'
   },
 };

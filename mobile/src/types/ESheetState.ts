@@ -1,6 +1,6 @@
 export enum ESheetState {
-    OPEN,
-    HALF,
-    HIDE,
-    CLOSE
+    OPEN = 3,
+    HALF = 2,
+    HIDE = 1,
+    CLOSE = 0
 }

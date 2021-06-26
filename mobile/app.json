@@ -25,9 +25,10 @@
       }
     },
     "android": {
+      "backgroundColor": "#2E2F30",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#2E2F30"
       },
       "package": "com.flute.flute",
       "config": {

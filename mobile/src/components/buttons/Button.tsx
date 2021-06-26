@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { StyleSheet, TouchableOpacity, Text, ViewStyle } from "react-native";
+import { StyleSheet, TouchableOpacity, Text, ViewStyle, Pressable } from "react-native";
 import { useStyles } from "../../hooks/useStyles";
 import { Theme } from "../../types/ITheme";
 import Typography from "../typograpy/Typography";
@@ -27,6 +27,17 @@ const createContainerStyles = (theme: Theme) =>
             borderColor: theme.color.active,
             borderWidth: 1,
         },
+        'outlined-secondary': {
+            borderStyle: "solid",
+            borderColor: theme.color.border,
+            borderWidth: 1,
+        },
+        'outlined-active': {
+            borderStyle: "solid",
+            borderColor: theme.color.border,
+            backgroundColor: theme.color.activeBlur,
+            borderWidth: 1,
+        },
     });
 
 const createTextStyles = (theme: Theme) =>
@@ -37,6 +48,12 @@ const createTextStyles = (theme: Theme) =>
         outlined: {
             color: theme.color.active,
         },
+        'outlined-secondary': {
+            color: theme.color.text,
+        },
+        'outlined-active': {
+            color: theme.color.active,
+        }
     });
 
 const createButtonSizeStyles = (theme: Theme) =>
@@ -69,7 +86,7 @@ const createTextSizeStyles = (theme: Theme) =>
     });
 
 type ButtonSize = "sm" | "md" | "lg";
-type ButtonVariant = "filled" | "outlined";
+type ButtonVariant = "filled" | "outlined" | "outlined-secondary" | "outlined-active";
 
 export interface ButtonProps {
     onPress(e: any): void;
@@ -92,12 +109,16 @@ const Button: React.FC<ButtonProps> = ({ onPress, text, icon, fluid, style, vari
             containerStyle.push(containerStyles.fluid)
         }
         return containerStyle
-    }, [])
+    }, [variant, style])
+
+    const _onPress = () => {
+        onPress({});
+    }
     return (
-        <TouchableOpacity
-            activeOpacity={0.7}
+        <Pressable
+            // activeOpacity={0.7}
             style={containerStyle}
-            onPress={onPress}>
+            onPress={_onPress}>
             {text && <Typography style={[textSizeStyle[size], textStyles[variant]]}>{text}</Typography>}
             {icon && (
                 <FontAwesome5
@@ -105,7 +126,7 @@ const Button: React.FC<ButtonProps> = ({ onPress, text, icon, fluid, style, vari
                     name={icon}
                 />
             )}
-        </TouchableOpacity>
+        </Pressable>
     );
 };
 

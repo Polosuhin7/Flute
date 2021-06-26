@@ -1,6 +1,8 @@
+import * as Linking from "expo-linking";
+import I18n from "i18n-js";
 import { observer } from "mobx-react";
 import React from "react";
-import { StyleSheet, View, Image, Platform } from "react-native";
+import { Image, Platform, StyleSheet, View } from "react-native";
 import Button from "../../components/buttons/Button";
 import IconButton from "../../components/buttons/IconButton";
 import Divider from "../../components/divider/Divider";
@@ -10,10 +12,9 @@ import { useStyles } from "../../hooks/useStyles";
 import { useTheme } from "../../providers/ThemeProvider";
 import stores from "../../stores/stores";
 import { Theme } from "../../types/ITheme";
-import { IOrganizationShedule, IShedule } from "../../types/organization/IOrganization";
+import { IOrganizationShedule } from "../../types/organization/IOrganization";
 import { getGeoDistance } from "../../utils/getGeoDistance";
-import * as Linking from "expo-linking";
-import moment from "moment";
+import { makeUrl } from "../../utils/makeUrl";
 import { textToOrganizationClosed } from "../../utils/orgnizationSheduleHelper";
 
 const { organization, app } = stores;
@@ -80,31 +81,32 @@ const createStyle = (theme: Theme) =>
 
         workHours: {
             paddingBottom: theme.spacing.base,
-            textTransform: 'capitalize'
+            textTransform: "capitalize",
         },
     });
 
 interface SheduleProps {
     shedule: IOrganizationShedule;
 }
+
 const Shedule: React.FC<SheduleProps> = ({ shedule }) => {
     const styles = useStyles(createStyle);
     const { id, ...weekDays } = shedule;
     return (
         <View>
-            {Object.entries(weekDays).map(( [day, { time_from, time_to }]) => {
+            {Object.entries(weekDays).map(([day, { time_from, time_to }]) => {
                 return (
                     <Typography style={styles.workHours} key={`index-${day}`}>
-                        {day}: {time_from.split(":").slice(0, 2).join(":")} -{" "}
+                        {I18n.t(day)}: {time_from.split(":").slice(0, 2).join(":")} -{" "}
                         {time_to.split(":").slice(0, 2).join(":")}
                     </Typography>
-                )
+                );
             })}
         </View>
     );
 };
 
-const OrganizationList: React.FC<any> = () => {
+const OrganizationItem: React.FC<any> = () => {
     const { activeOrganization, toggleLike, isLiked } = organization;
     const { location } = app;
     const styles = useStyles(createStyle);
@@ -116,16 +118,15 @@ const OrganizationList: React.FC<any> = () => {
     };
 
     const onDirection = () => {
-        const {latitude: lt, longitude: lg} = activeOrganization.coordinate!
-        const {latitude, longitude}  = app.location.coords;
+        const { latitude: lt, longitude: lg } = activeOrganization.coordinate!;
+        const { latitude, longitude } = app.location.coords;
         //open  ya maps
         // Linking.openURL(`yandexmaps://maps.yandex.com/?rtt=auto&rtext=${lt}, ${lg}~${latitude}, ${longitude}, &z=12`);
         // open native maps
-        var scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
+        var scheme = Platform.OS === "ios" ? "maps:" : "geo:";
         var url = scheme + `saddr=${lt}, ${lg}&daddr=${latitude}, ${longitude}, &z=12`;
         Linking.openURL(url);
-
-    }
+    };
 
     return (
         <>
@@ -137,7 +138,11 @@ const OrganizationList: React.FC<any> = () => {
                     {getGeoDistance(location, activeOrganization.coordinate)} км
                 </Typography>
                 <Divider variant='dot' />
-                {activeOrganization.shedule && <Typography style={styles.secondaryText}>{textToOrganizationClosed(activeOrganization.shedule)}</Typography>}
+                {activeOrganization.shedule && (
+                    <Typography style={styles.secondaryText}>
+                        {textToOrganizationClosed(activeOrganization.shedule)}
+                    </Typography>
+                )}
             </View>
 
             <View style={styles.buttonGroupBox}>
@@ -152,7 +157,7 @@ const OrganizationList: React.FC<any> = () => {
                     <View style={styles.imageBox}>
                         <Image
                             style={styles.image}
-                            source={{ uri: `${config.baseUrl}${activeOrganization.images[0].url}` }}
+                            source={{ uri: makeUrl(activeOrganization.images[0].url) }}
                         />
                         <View style={styles.previewBox}>
                             {activeOrganization.images.slice(1, 3).map((image, index) => {
@@ -163,7 +168,7 @@ const OrganizationList: React.FC<any> = () => {
                                             styles.preview,
                                             { marginBottom: !index ? theme.spacing.small : 0 },
                                         ]}
-                                        source={{ uri: `${config.baseUrl}${image.url}` }}
+                                        source={{ uri: makeUrl(image.url) }}
                                     />
                                 );
                             })}
@@ -215,4 +220,4 @@ const OrganizationList: React.FC<any> = () => {
     );
 };
 
-export default observer(OrganizationList);
+export default observer(OrganizationItem);

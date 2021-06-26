@@ -23,6 +23,7 @@ export interface ThemeColors {
     primary: string;
     secondary: string;
     active: string;
+    activeBlur: string;
     text: string;
     border: string;
     layout: string;

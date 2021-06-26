@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AvailableThemes } from './../themes/index';
 import {computed, makeAutoObservable} from "mobx";
 import {IRootStore} from "./Root.store";
@@ -25,12 +26,22 @@ class AppStore implements IAppStore {
     constructor(rootStore: IRootStore) {
         makeAutoObservable(this);
         this.rootStore = rootStore;
+        this.setAppTheme()
     }
-
+    private _theme: AvailableThemes = 'dark';
     @computed
     get theme() {
-        return Appearance.getColorScheme() === 'dark' ? 'dark' : 'light'
+        return this._theme;
     }
+    private setAppTheme = async () => {
+        const userTheme = await AsyncStorage.getItem('app-theme');
+        if(userTheme) {
+            this._theme = userTheme as AvailableThemes;
+        } else {
+            this._theme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light'
+        }
+    }
+
     setError = (error: IError | null): void => {
         this.error = error;
     }

@@ -105,7 +105,7 @@ const IconButton: React.FC<ButtonProps> = ({
             activeOpacity={0.7}
             style={[buttonSizeStyle[size], containerStyles.base, containerStyles[variant], style]}
             onPress={onPress}>
-            <FontAwesome5 style={iconStyles} name={icon} />
+                <FontAwesome5 style={iconStyles} name={icon} />
         </TouchableOpacity>
     );
 };
