@@ -95,7 +95,7 @@ const Shedule: React.FC<SheduleProps> = ({ shedule }) => {
     const { id, ...weekDays } = shedule;
     return (
         <View>
-            {Object.entries(weekDays).map(([day, { time_from, time_to }]) => {
+            {Object.entries(weekDays).map(([day, { time_from = '', time_to = '' }]) => {
                 return (
                     <Typography style={styles.workHours} key={`index-${day}`}>
                         {I18n.t(day)}: {time_from.split(":").slice(0, 2).join(":")} -{" "}

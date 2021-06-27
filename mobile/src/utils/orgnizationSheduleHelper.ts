@@ -1,19 +1,18 @@
 import moment from "moment";
 import { IOrganizationShedule } from "../types/organization/IOrganization";
 
-const sheduleDays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+const sheduleDays = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
 
 export const textToOrganizationClosed = (_shedule: IOrganizationShedule) => {
-    const {id, ...shedule} = _shedule;
+    const {id, ...shedule} = _shedule || {};
     const currentDate = new Date();
-    const currentDay = currentDate.getDay() - 1;
-    const {time_from = '', time_to= ''} = shedule[sheduleDays[currentDay] as keyof Omit<IOrganizationShedule, 'id'>];
+    const currentDay = currentDate.getDay();
+    // console.log('days', shedule[sheduleDays[currentDay] as keyof Omit<IOrganizationShedule, 'id'>])
+    const {time_from = '', time_to= ''} = shedule[sheduleDays[currentDay] as keyof Omit<IOrganizationShedule, 'id'>] || {};
     const [openedHours, openedMinutes] = time_from.split(':');
     const [closedHours, closedMinutes] = time_to.split(':');
-    // if(!(openedHours && openedMinutes && closedHours && closedMinutes)) {
-    //     return 'Закрыто';
-    // }
+
     const dateOpened = new Date();
     const dateClosed = new Date();
 
@@ -41,7 +40,7 @@ export const textToOrganizationClosed = (_shedule: IOrganizationShedule) => {
 export const isTodayOpen = (_shedule: IOrganizationShedule) => {
     const {id, ...shedule} = _shedule;
     const currentDate = new Date();
-    const currentDay = currentDate.getDay() - 1;
+    const currentDay = currentDate.getDay();
     const {time_from = '', time_to= ''} = shedule[sheduleDays[currentDay] as keyof Omit<IOrganizationShedule, 'id'>];
     const [openedHours, openedMinutes] = time_from.split(':');
     const [closedHours, closedMinutes] = time_to.split(':');
