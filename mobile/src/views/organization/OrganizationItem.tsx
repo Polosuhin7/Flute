@@ -158,7 +158,7 @@ const OrganizationItem: React.FC<any> = () => {
                     <View style={styles.imageBox}>
                         <Image
                             style={styles.image}
-                            source={{ uri: makeUrl(activeOrganization.images[0].url) }}
+                            source={{ uri: activeOrganization.images[0].url }}
                         />
                         <View style={styles.previewBox}>
                             {activeOrganization.images.slice(1, 3).map((image, index) => {
@@ -169,7 +169,7 @@ const OrganizationItem: React.FC<any> = () => {
                                             styles.preview,
                                             { marginBottom: !index ? theme.spacing.small : 0 },
                                         ]}
-                                        source={{ uri: makeUrl(image.url) }}
+                                        source={{ uri: image.url }}
                                     />
                                 );
                             })}
