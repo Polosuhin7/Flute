@@ -7,12 +7,13 @@ import { INavigationState } from "../stores/Navigation.store";
 import stores from "../stores/stores";
 import { ESheetState } from "../types/ESheetState";
 import BottomSheet from "./BottomSheet";
+import { useCallback } from "react";
 
 interface INavBottomSheetProps {
     menu: keyof INavigationState;
     Content: ReactNode;
     hideClose?: boolean;
-    snapPoints?: any[]
+    snapPoints: (string | number)[]
     onClose?(): void;
 }
 
@@ -25,13 +26,13 @@ const NavBottomSheet: React.FC<INavBottomSheetProps> = ({
     onClose,
 }) => {
     const {state} = navigation;
-    const _onChange = (value: number) => {
+    const _onChange = useCallback((value: number) => {
         if (onClose) {
             onClose();
         } else {
             navigation.navigate(menu, value);
         }
-    };
+    }, []);
     return (
         <BottomSheet
             {...{ state: state[menu], Content, onChange: _onChange, hideClose, snapPoints }}

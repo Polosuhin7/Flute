@@ -46,7 +46,7 @@ export interface IBottomSheetProps {
     state: ESheetState;
     hideClose?: boolean;
     onChange?(state: number): void;
-    snapPoints?: string|number[]
+    snapPoints: (string|number)[];
 }
 
 const BottomSheet: React.FC<IBottomSheetProps> = ({

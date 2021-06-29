@@ -1,8 +1,9 @@
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
+import { toJS } from "mobx";
 import { observer } from "mobx-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, StyleSheet, useColorScheme, View } from "react-native";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Circle, Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import customStyle from "../../../assets/maps-style.json";
 import IconButton from "../../components/buttons/IconButton";
 import { useStyles } from "../../hooks/useStyles";
@@ -11,6 +12,7 @@ import stores from "../../stores/stores";
 import { ESheetState } from "../../types/ESheetState";
 import { Theme } from "../../types/ITheme";
 import { ICoordinate } from "../../types/organization/IOrganization";
+import { debounce } from "../../utils/debounce";
 const { width, height } = Dimensions.get("window");
 const { organization, navigation, app } = stores;
 
@@ -48,20 +50,54 @@ const createStyle = (theme: Theme) =>
         },
     });
 
+const CustomMarker: React.FC<any> = observer(({ organization: _organization }) => {
+    const styles = useStyles(createStyle);
+    const { theme } = useTheme();
+    const MarkerRef = useRef<any>();
+    useEffect(() => {
+        MarkerRef.current?.redraw();
+    }, [organization.activeOrganization?.id]);
+    return (
+        <Marker
+            ref={MarkerRef}
+            onPress={() => {
+                organization.setActiveOrganization(_organization);
+                navigation.navigate("organizationItem", ESheetState.HALF);
+            }}
+            tracksViewChanges={false}
+            key={_organization.title + _organization.id}
+            {...{ coordinate: _organization.coordinate }}>
+            <View
+                style={[
+                    styles.marker,
+                    {
+                        backgroundColor:
+                            organization.activeOrganization?.id === _organization.id
+                                ? theme.color.active
+                                : theme.color.primary,
+                    },
+                ]}
+            />
+        </Marker>
+    );
+});
+
 let _mapView: MapView | null;
 const OrganizationMap: React.FC = () => {
     const { theme, setTheme } = useTheme();
     const colorScheme = theme.id;
     const styles = useStyles(createStyle);
-    const { activeOrganization, fetchData, list, setActiveOrganization } = organization;
+    const { activeOrganization, list } = organization;
     const {
-        location: { coords: initialCoords },
-        setLocation
+        location: { coords },
+        setLocation,
     } = app;
-    
-    useEffect(() => {
-        fetchData();
-    }, []);
+
+    const [mapRegion, setMapRegion] = useState<Region>({
+        ...coords,
+        latitudeDelta: 0.3,
+        longitudeDelta: 0.3,
+    });
 
     useEffect(() => {
         if (activeOrganization?.coordinate.latitude) {
@@ -69,23 +105,19 @@ const OrganizationMap: React.FC = () => {
         }
     }, [activeOrganization?.id]);
 
-    const moveTo = ({longitude, latitude}: ICoordinate) => {
+    const moveTo = ({ longitude, latitude }: ICoordinate) => {
         if (_mapView) {
-            _mapView.animateToRegion({ longitude, latitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 });
+            _mapView.animateCamera({ center: { ...mapRegion, longitude, latitude } }, { duration: 300 });
         }
-    }
+    };
 
     const setUserCurrentLocation = async () => {
         try {
             moveTo(app.location.coords);
             setLocation(await Location.getCurrentPositionAsync({}));
-            // navigation.closeAll();
-        } catch(error) {
-            
-        }
-    }
+        } catch (error) {}
+    };
 
-    
     return (
         <View style={styles.container}>
             {theme.id === "dark" ? (
@@ -106,17 +138,18 @@ const OrganizationMap: React.FC = () => {
                 />
             )}
             <IconButton
-                variant="secondary"
+                variant='secondary'
                 style={styles.currentLocationButton}
-                icon="compass"
+                icon='compass'
                 onPress={setUserCurrentLocation}
             />
             <MapView
                 ref={(ref) => {
                     _mapView = ref;
                 }}
-                region={{ ...initialCoords, latitudeDelta: 0.922, longitudeDelta: 0.421 }}
-                minZoomLevel={2}
+                onRegionChange={debounce(setMapRegion, 500)}
+                initialRegion={mapRegion}
+                minZoomLevel={3}
                 zoomEnabled
                 showsUserLocation
                 showsCompass={false}
@@ -127,24 +160,25 @@ const OrganizationMap: React.FC = () => {
                 customMapStyle={colorScheme === "dark" ? customStyle : []}>
                 {list.map((organization) => {
                     return (
-                        <Marker
-                            onPress={() => {
-                                setActiveOrganization(organization);
-                                navigation.navigate("organizationItem", ESheetState.HALF);
-                            }}
-                            key={organization.title + organization.id}
-                            {...{ coordinate: organization.coordinate }}>
-                            <View
-                                style={[
-                                    styles.marker,
-                                    {
-                                        backgroundColor: activeOrganization?.id === organization.id
-                                            ? theme.color.active
-                                            : theme.color.primary,
-                                    },
-                                ]}
-                            />
-                        </Marker>
+                        <CustomMarker {...{ key: organization.title, organization }} />
+                        // <Marker
+                        //     onPress={() => {
+                        //         setActiveOrganization(organization);
+                        //         navigation.navigate("organizationItem", ESheetState.HALF);
+                        //         setActive(true);
+                        //     }}
+                        //     tracksViewChanges={false}
+                        //     key={organization.title + organization.id}
+                        //     {...{ coordinate: organization.coordinate }}>
+                        //     <View
+                        //         style={[
+                        //             styles.marker,
+                        //             {
+                        //                 backgroundColor: active ? theme.color.active : theme.color.primary,
+                        //             },
+                        //         ]}
+                        //     />
+                        // </Marker>
                     );
                 })}
             </MapView>

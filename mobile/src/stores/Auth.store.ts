@@ -85,7 +85,7 @@ class AuthStore implements IAuthStore {
                 this.isAuth = false;
             })
         } catch (e) {
-            console.log('AuthModel::logout::e', e)
+            console.log('AuthModel::logout::e')
         }
     }
 
@@ -110,7 +110,7 @@ class AuthStore implements IAuthStore {
             // Start ping
             await this.startPing();
         } catch (e) {
-            console.log('AuthStore::information::e', e)
+            console.log('AuthStore::information::e')
             runInAction(() => {
                 this.loading = false;
                 this.isAuth = false;

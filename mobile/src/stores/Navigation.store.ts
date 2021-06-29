@@ -52,11 +52,13 @@ class NavigationStore implements INavigationStore {
 
     @action
     navigate = (view:keyof INavigationState, state = ESheetState.OPEN) => {
-        this.history.push({...this._state});
-        if(view === 'organizationItem') {
-            this._state['organizationList'] = ESheetState.CLOSE;
-        }
-        this._state[view] = state;
+        // if(this._state[view] !== state){
+            this.history.push({...this._state});
+            if(view === 'organizationItem') {
+                this._state['organizationList'] = ESheetState.CLOSE;
+            }
+            this._state[view] = state;
+        // }
     }
 }
 

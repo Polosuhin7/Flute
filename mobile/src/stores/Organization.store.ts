@@ -9,6 +9,7 @@ import { OrganizationFilterType } from '../types/organization/OrganizationFilter
 export interface IOrganizationStore {
     error: IError | null;
     list: IOrganization[];
+    data: IOrganization[];
     loading: boolean;
     activeOrganization: IOrganization | null;
     isLiked: boolean;
@@ -62,7 +63,6 @@ class OrganizationStore implements IOrganizationStore {
                 this.favoriteOrganizations = data;
             })
         } catch(error) {
-            console.log(error)
             this.error = error;
         } finally {
             runInAction(() => {
@@ -82,7 +82,6 @@ class OrganizationStore implements IOrganizationStore {
                 this.favoriteOrganizations = data;
             })
         } catch(error) {
-            console.log(error)
             this.error = error;
         } finally {
             runInAction(() => {

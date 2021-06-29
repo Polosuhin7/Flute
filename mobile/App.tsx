@@ -24,7 +24,7 @@ i18n.translations = {
 i18n.locale = Localization.locale;
 i18n.fallbacks = true;
 
-const { app } = stores;
+const { app, organization } = stores;
 function App() {
     const { ready, setLocation, setReady, setError } = app;
     const [loaded] = useFonts({
@@ -36,6 +36,11 @@ function App() {
 
     useEffect(() => {
         (async () => {
+            try {
+                await organization.fetchData();
+            } catch(error) {
+                console.log('failed fetch')
+            }
             try {
                 let { status } = await Location.requestForegroundPermissionsAsync();
                 if (status !== "granted") {
