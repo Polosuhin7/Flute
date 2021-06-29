@@ -1,9 +1,8 @@
 import * as Location from "expo-location";
-import { toJS } from "mobx";
 import { observer } from "mobx-react";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Dimensions, StyleSheet, useColorScheme, View } from "react-native";
-import MapView, { Circle, Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
+import React, { useEffect, useRef, useState } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import customStyle from "../../../assets/maps-style.json";
 import IconButton from "../../components/buttons/IconButton";
 import { useStyles } from "../../hooks/useStyles";
@@ -11,10 +10,10 @@ import { useTheme } from "../../providers/ThemeProvider";
 import stores from "../../stores/stores";
 import { ESheetState } from "../../types/ESheetState";
 import { Theme } from "../../types/ITheme";
-import { ICoordinate } from "../../types/organization/IOrganization";
+import { ICoordinate, IOrganization } from "../../types/organization/IOrganization";
 import { debounce } from "../../utils/debounce";
 const { width, height } = Dimensions.get("window");
-const { organization, navigation, app } = stores;
+const { organization, app } = stores;
 
 const createStyle = (theme: Theme) =>
     StyleSheet.create({
@@ -50,52 +49,61 @@ const createStyle = (theme: Theme) =>
         },
     });
 
-const CustomMarker: React.FC<any> = observer(({ organization: _organization }) => {
-    const styles = useStyles(createStyle);
-    const { theme } = useTheme();
-    const MarkerRef = useRef<any>();
-    useEffect(() => {
-        MarkerRef.current?.redraw();
-    }, [organization.activeOrganization?.id]);
-    return (
-        <Marker
-            ref={MarkerRef}
-            onPress={() => {
-                organization.setActiveOrganization(_organization);
-                navigation.navigate("organizationItem", ESheetState.HALF);
-            }}
-            tracksViewChanges={false}
-            key={_organization.title + _organization.id}
-            {...{ coordinate: _organization.coordinate }}>
-            <View>
-                {organization.activeOrganization?.id === _organization.id ? (
-                    <View
-                        style={[
-                            styles.marker,
-                            {
-                                backgroundColor: theme.color.active,
-                            },
-                        ]}
-                    />
-                ) : (
-                    <View>
+interface ICustomMarkerProps {
+    onOrganizationSelect: (val: IOrganization) => void;
+    organization: IOrganization;
+}
+const CustomMarker: React.FC<ICustomMarkerProps> = observer(
+    ({ organization: _organization, onOrganizationSelect }) => {
+        const styles = useStyles(createStyle);
+        const { theme } = useTheme();
+        const MarkerRef = useRef<any>();
+        useEffect(() => {
+            MarkerRef.current?.redraw();
+        }, [organization.activeOrganization?.id]);
+        return (
+            <Marker
+                ref={MarkerRef}
+                onPress={() => {
+                    organization.setActiveOrganization(_organization);
+                    onOrganizationSelect(_organization);
+                }}
+                tracksViewChanges={false}
+                key={_organization.title + _organization.id}
+                {...{ coordinate: _organization.coordinate }}>
+                <View>
+                    {organization.activeOrganization?.id === _organization.id ? (
                         <View
                             style={[
                                 styles.marker,
                                 {
-                                    backgroundColor: theme.color.primary,
+                                    backgroundColor: theme.color.active,
                                 },
                             ]}
                         />
-                    </View>
-                )}
-            </View>
-        </Marker>
-    );
-});
+                    ) : (
+                        <View>
+                            <View
+                                style={[
+                                    styles.marker,
+                                    {
+                                        backgroundColor: theme.color.primary,
+                                    },
+                                ]}
+                            />
+                        </View>
+                    )}
+                </View>
+            </Marker>
+        );
+    }
+);
 
+interface IOrganizationMapProps {
+    onOrganizationSelect(val: IOrganization): void;
+}
 let _mapView: MapView | null;
-const OrganizationMap: React.FC = () => {
+const OrganizationMap: React.FC<IOrganizationMapProps> = ({ onOrganizationSelect }) => {
     const { theme, setTheme } = useTheme();
     const colorScheme = theme.id;
     const styles = useStyles(createStyle);
@@ -172,25 +180,7 @@ const OrganizationMap: React.FC = () => {
                 customMapStyle={colorScheme === "dark" ? customStyle : []}>
                 {list.map((organization) => {
                     return (
-                        <CustomMarker {...{ key: organization.title, organization }} />
-                        // <Marker
-                        //     onPress={() => {
-                        //         setActiveOrganization(organization);
-                        //         navigation.navigate("organizationItem", ESheetState.HALF);
-                        //         setActive(true);
-                        //     }}
-                        //     tracksViewChanges={false}
-                        //     key={organization.title + organization.id}
-                        //     {...{ coordinate: organization.coordinate }}>
-                        //     <View
-                        //         style={[
-                        //             styles.marker,
-                        //             {
-                        //                 backgroundColor: active ? theme.color.active : theme.color.primary,
-                        //             },
-                        //         ]}
-                        //     />
-                        // </Marker>
+                        <CustomMarker {...{ key: organization.title, organization, onOrganizationSelect }} />
                     );
                 })}
             </MapView>

@@ -42,7 +42,6 @@ const createStyle = (theme: Theme) =>
         },
     });
 export interface IBottomSheetProps {
-    Content: ReactNode;
     state: ESheetState;
     hideClose?: boolean;
     onChange?(state: number): void;
@@ -50,9 +49,8 @@ export interface IBottomSheetProps {
 }
 
 const BottomSheet: React.FC<IBottomSheetProps> = ({
-    Content,
+    children,
     state,
-    hideClose,
     snapPoints: _snapPoints,
     onChange,
 }) => {
@@ -63,6 +61,7 @@ const BottomSheet: React.FC<IBottomSheetProps> = ({
     useEffect(() => {
         ref.current?.snapTo(state)
     }, [state]);
+    
     const _onChange = (state: number) => {
         onChange && onChange(state);
     }
@@ -75,7 +74,7 @@ const BottomSheet: React.FC<IBottomSheetProps> = ({
             style={styles.content}
             onChange={_onChange}
             {...{ ref, index: state, snapPoints }}>
-            {Content}
+            {children}
         </Bottom>
     );
 };

@@ -9,12 +9,13 @@ import { AppearanceProvider } from "react-native-appearance";
 import { API } from "./src/models";
 import ApiProvider from "./src/providers/ApiProvider";
 import { ThemeProvider } from "./src/providers/ThemeProvider";
-import Main from "./src/screens/Main";
 import stores from "./src/stores/stores";
 import * as Localization from "expo-localization";
 import i18n from "i18n-js";
 import { ruLocale, enLocale } from "./src/locales";
 import Button from "./src/components/buttons/Button";
+import { StatusBar } from "react-native";
+import Organizations from "./src/views/organization/Organizations";
 
 moment.locale("ru");
 i18n.translations = {
@@ -59,12 +60,14 @@ function App() {
     if (!ready || !loaded) {
         return <AppLoading />;
     }
+    const barStyle = app.theme === "dark" ? "light-content" : "dark-content";
     return (
         <AppearanceProvider>
             <ApiProvider api={API}>
                 <Provider {...stores}>
                     <ThemeProvider theme={app.theme}>
-                        <Main />
+                        <StatusBar barStyle={barStyle} />
+                        <Organizations />
                     </ThemeProvider>
                 </Provider>
             </ApiProvider>

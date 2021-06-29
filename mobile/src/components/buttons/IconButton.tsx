@@ -31,7 +31,7 @@ const createTextStyles = (theme: Theme) =>
             color: theme.color.primary,
         },
         active: {
-            color: theme.color.text,
+            color: theme.color.active,
         },
     });
 

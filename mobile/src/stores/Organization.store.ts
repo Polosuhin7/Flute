@@ -74,14 +74,17 @@ class OrganizationStore implements IOrganizationStore {
     toggleLike = async () => {
         // TODO: КОСТЫЛЬ где у activeOrganization перетерается поле coordinate
         const findedOrganization = this.list.find(({id}) => id === this.activeOrganization?.id)
+        // console.log('findedOrganization', findedOrganization)
         if(!findedOrganization) return;
         try {
             this.loading = true;
             const data = await this.model.toggleFavorite(findedOrganization);
+            console.log('data', data);
             runInAction(() => {
                 this.favoriteOrganizations = data;
             })
         } catch(error) {
+            console.log('failed toggle like')
             this.error = error;
         } finally {
             runInAction(() => {

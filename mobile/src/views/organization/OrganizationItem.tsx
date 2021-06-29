@@ -136,6 +136,7 @@ const OrganizationItem: React.FC<any> = () => {
     const ScrollViewRef = useRef<any>();
 
 
+    
     useEffect(() => {
         ScrollViewRef?.current?.scrollTo({y:0});
     },[activeOrganization?.id]);
@@ -143,7 +144,7 @@ const OrganizationItem: React.FC<any> = () => {
     if (!activeOrganization) return null;
 
     const callPhone = () => {
-        Linking.openURL(`tel:${activeOrganization.phone}`);
+        Linking.openURL(`tel:${activeOrganization?.phone}`);
     };
 
     const onDirection = () => {
@@ -182,7 +183,7 @@ const OrganizationItem: React.FC<any> = () => {
                     <IconButton
                         active={isLiked}
                         style={styles.buttonLike}
-                        icon='heart'
+                        icon={isLiked ? 'heartbeat' : 'heart'}
                         onPress={toggleLike}
                     />
                     <IconButton style={styles.buttonShare} icon='phone' onPress={callPhone} />

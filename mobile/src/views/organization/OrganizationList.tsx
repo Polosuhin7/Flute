@@ -57,7 +57,10 @@ const createStyles = (theme: Theme) =>
         },
     });
 const { organization, navigation, app } = stores;
-const OrganizationList: React.FC<any> = () => {
+interface IOrganizationListProps {
+    onOrganizationSelect(val: IOrganization): void
+}
+const OrganizationList: React.FC<IOrganizationListProps> = ({onOrganizationSelect}) => {
     const styles = useStyles(createStyles);
     const { list, fetchData, loading, filter, toogleFileter } = organization;
     const { location } = app;
@@ -96,6 +99,7 @@ const OrganizationList: React.FC<any> = () => {
                     <TouchableOpacity
                         onPress={() => {
                             organization.setActiveOrganization(item);
+                            onOrganizationSelect(item);
                             navigation.navigate("organizationItem", ESheetState.HALF);
                         }}>
                         <View style={styles.item} key={item.id + item.title}>
