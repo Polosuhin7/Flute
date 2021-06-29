@@ -17,6 +17,9 @@ const createContainerStyles = (theme: Theme) =>
         secondary: {
             backgroundColor: theme.color.secondary,
         },
+        active: {
+            backgroundColor: theme.color.active
+        }
     });
 
 const createTextStyles = (theme: Theme) =>
@@ -28,7 +31,7 @@ const createTextStyles = (theme: Theme) =>
             color: theme.color.primary,
         },
         active: {
-            color: theme.color.active,
+            color: theme.color.text,
         },
     });
 
@@ -73,7 +76,7 @@ const createTextSizeStyles = (theme: Theme) =>
     });
 
 type ButtonSize = "lg" | "md" | "sm" | "xs";
-type ButtonVariant = "primary" | "secondary";
+type ButtonVariant = "primary" | "secondary" | "active";
 
 export interface ButtonProps {
     onPress(e: any): void;

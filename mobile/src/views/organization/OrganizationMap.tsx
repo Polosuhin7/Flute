@@ -67,17 +67,29 @@ const CustomMarker: React.FC<any> = observer(({ organization: _organization }) =
             tracksViewChanges={false}
             key={_organization.title + _organization.id}
             {...{ coordinate: _organization.coordinate }}>
-            <View
-                style={[
-                    styles.marker,
-                    {
-                        backgroundColor:
-                            organization.activeOrganization?.id === _organization.id
-                                ? theme.color.active
-                                : theme.color.primary,
-                    },
-                ]}
-            />
+            <View>
+                {organization.activeOrganization?.id === _organization.id ? (
+                    <View
+                        style={[
+                            styles.marker,
+                            {
+                                backgroundColor: theme.color.active,
+                            },
+                        ]}
+                    />
+                ) : (
+                    <View>
+                        <View
+                            style={[
+                                styles.marker,
+                                {
+                                    backgroundColor: theme.color.primary,
+                                },
+                            ]}
+                        />
+                    </View>
+                )}
+            </View>
         </Marker>
     );
 });

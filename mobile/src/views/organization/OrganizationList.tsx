@@ -89,6 +89,8 @@ const OrganizationList: React.FC<any> = () => {
                 data={list}
                 refreshing={loading}
                 onRefresh={fetchData}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
                 keyExtractor={(card) => card.title}
                 renderItem={({ item }: ListRenderItemInfo<IOrganization>) => (
                     <TouchableOpacity
