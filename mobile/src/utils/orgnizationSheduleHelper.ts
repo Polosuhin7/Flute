@@ -1,3 +1,4 @@
+import I18n from "i18n-js";
 import moment from "moment";
 import { IOrganizationShedule } from "../types/organization/IOrganization";
 
@@ -27,13 +28,13 @@ export const textToOrganizationClosed = (_shedule: IOrganizationShedule) => {
     
     
     if(moment(currentDate).isBefore(dateOpened)) {
-        return `Откроется ${moment(dateOpened).from(currentDate)}`;
+        return `${I18n.t('Opened from')} ${moment(dateOpened).from(currentDate)}`;
     }
     if(moment(currentDate).isBefore(dateClosed)) {
-        return `Закроется ${moment(dateClosed).from(currentDate)}`;
+        return `${I18n.t('Closed from')} ${moment(dateClosed).from(currentDate)}`;
     }
 
-    return `Закрыто`;
+    return I18n.t('Closed');
 }
 
 

@@ -1,4 +1,5 @@
 import { BottomSheetFlatList } from "@gorhom/bottom-sheet";
+import I18n from "i18n-js";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { ListRenderItemInfo, StyleSheet, TouchableOpacity, View } from "react-native";
@@ -67,14 +68,14 @@ const OrganizationList: React.FC<IOrganizationListProps> = ({onOrganizationSelec
     return (
         <>
             <Typography style={styles.title} variant='h4'>
-                Бары
+                {I18n.t('Bars')}
             </Typography>
             <View style={styles.filterGroup}>
                 <Button
                     style={styles.filterItem}
                     size='sm'
                     variant={filter === "favorite" ? "outlined-active" : "outlined-secondary"}
-                    text='Избраные'
+                    text={I18n.t('Favorites')}
                     icon='heart'
                     onPress={() => toogleFileter("favorite")}
                 />
@@ -82,7 +83,7 @@ const OrganizationList: React.FC<IOrganizationListProps> = ({onOrganizationSelec
                     style={styles.filterItem}
                     size='sm'
                     variant={filter === "open-now" ? "outlined-active" : "outlined-secondary"}
-                    text='Открыто сейчас'
+                    text={I18n.t('Open now')}
                     icon='clock'
                     onPress={() => toogleFileter("open-now")}
                 />

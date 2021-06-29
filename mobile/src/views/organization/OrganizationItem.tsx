@@ -4,15 +4,6 @@ import I18n from "i18n-js";
 import { observer } from "mobx-react";
 import React, { useEffect, useRef } from "react";
 import { Image, Platform, StyleSheet, View } from "react-native";
-import Animated, {
-    Extrapolate,
-    interpolate,
-    min,
-    useAnimatedScrollHandler,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
-} from "react-native-reanimated";
 import Button from "../../components/buttons/Button";
 import IconButton from "../../components/buttons/IconButton";
 import Divider from "../../components/divider/Divider";
@@ -20,10 +11,8 @@ import Typography from "../../components/typograpy/Typography";
 import { useStyles } from "../../hooks/useStyles";
 import { useTheme } from "../../providers/ThemeProvider";
 import stores from "../../stores/stores";
-import { ESheetState } from "../../types/ESheetState";
 import { Theme } from "../../types/ITheme";
 import { IOrganizationShedule } from "../../types/organization/IOrganization";
-import { debounce } from "../../utils/debounce";
 import { getGeoDistance } from "../../utils/getGeoDistance";
 import { textToOrganizationClosed } from "../../utils/orgnizationSheduleHelper";
 
@@ -110,7 +99,7 @@ const createStyle = (theme: Theme) =>
 interface SheduleProps {
     shedule: IOrganizationShedule;
 }
-let scrollViewRef;
+
 const Shedule: React.FC<SheduleProps> = ({ shedule }) => {
     const styles = useStyles(createStyle);
     const { id, ...weekDays } = shedule;
@@ -135,12 +124,10 @@ const OrganizationItem: React.FC<any> = () => {
     const { theme } = useTheme();
     const ScrollViewRef = useRef<any>();
 
-
-    
     useEffect(() => {
-        ScrollViewRef?.current?.scrollTo({y:0});
-    },[activeOrganization?.id]);
-    
+        ScrollViewRef?.current?.scrollTo({ y: 0 });
+    }, [activeOrganization?.id]);
+
     if (!activeOrganization) return null;
 
     const callPhone = () => {
@@ -158,100 +145,96 @@ const OrganizationItem: React.FC<any> = () => {
         Linking.openURL(url);
     };
     return (
-            <BottomSheetScrollView
-                ref={ScrollViewRef}
-                snapToInterval={50}
-                showsHorizontalScrollIndicator={false}
-                >
-                <Typography style={styles.title} variant='h3'>
-                    {activeOrganization?.title}
+        <BottomSheetScrollView ref={ScrollViewRef} snapToInterval={50} showsHorizontalScrollIndicator={false}>
+            <Typography style={styles.title} variant='h3'>
+                {activeOrganization?.title}
+            </Typography>
+            <View style={styles.subtitleBox}>
+                <Typography style={styles.destinatioText}>
+                    {getGeoDistance(location, activeOrganization.coordinate)} км
                 </Typography>
-                <View style={styles.subtitleBox}>
-                    <Typography style={styles.destinatioText}>
-                        {getGeoDistance(location, activeOrganization.coordinate)} км
+                <Divider variant='dot' />
+                {activeOrganization.shedule && (
+                    <Typography style={styles.secondaryText}>
+                        {textToOrganizationClosed(activeOrganization.shedule)}
+                    </Typography>
+                )}
+            </View>
+
+            <View style={styles.buttonGroupBox}>
+                <Button variant='outlined' fluid text={I18n.t('Route')} onPress={onDirection} />
+                <IconButton
+                    active={isLiked}
+                    style={styles.buttonLike}
+                    icon={isLiked ? "heartbeat" : "heart"}
+                    onPress={toggleLike}
+                />
+                <IconButton style={styles.buttonShare} icon='phone' onPress={callPhone} />
+            </View>
+            <Divider />
+            <Typography style={styles.secondaryText}>{activeOrganization.description}</Typography>
+            {activeOrganization.images.length ? (
+                <>
+                    <View style={styles.imageBox}>
+                        <Image style={styles.image} source={{ uri: activeOrganization.images[0].url }} />
+                        <View style={styles.previewBox}>
+                            {activeOrganization.images.slice(1, 3).map((image, index) => {
+                                return (
+                                    <Image
+                                        key={image.id}
+                                        style={[
+                                            styles.preview,
+                                            { marginBottom: !index ? theme.spacing.small : 0 },
+                                        ]}
+                                        source={{ uri: image.url }}
+                                    />
+                                );
+                            })}
+                        </View>
+                    </View>
+                    <Divider />
+                </>
+            ) : null}
+
+            <View style={styles.section}>
+                <View style={styles.sectionTitle}>
+                    <Typography style={styles.title} variant='h5'>
+                        {I18n.t('Cocktails')}
                     </Typography>
                     <Divider variant='dot' />
-                    {activeOrganization.shedule && (
-                        <Typography style={styles.secondaryText}>
-                            {textToOrganizationClosed(activeOrganization.shedule)}
-                        </Typography>
-                    )}
+                    <Typography>{I18n.t('average check')} ~ {activeOrganization.average_check} р.</Typography>
                 </View>
 
-                <View style={styles.buttonGroupBox}>
-                    <Button variant='outlined' fluid text='Маршрут' onPress={onDirection} />
-                    <IconButton
-                        active={isLiked}
-                        style={styles.buttonLike}
-                        icon={isLiked ? 'heartbeat' : 'heart'}
-                        onPress={toggleLike}
-                    />
-                    <IconButton style={styles.buttonShare} icon='phone' onPress={callPhone} />
+                <Typography bold variant='subtitle' style={styles.groupTitle}>
+                    {I18n.t('Styles')}
+                </Typography>
+                <Typography>{activeOrganization.bar_style}</Typography>
+            </View>
+
+            <View style={styles.section}>
+                <View style={styles.sectionTitle}>
+                    <Typography style={styles.title} variant='h5'>
+                        {I18n.t('Bar')}
+                    </Typography>
                 </View>
-                <Divider />
-                <Typography style={styles.secondaryText}>{activeOrganization.description}</Typography>
-                {activeOrganization.images.length ? (
-                    <>
-                        <View style={styles.imageBox}>
-                            <Image style={styles.image} source={{ uri: activeOrganization.images[0].url }} />
-                            <View style={styles.previewBox}>
-                                {activeOrganization.images.slice(1, 3).map((image, index) => {
-                                    return (
-                                        <Image
-                                            key={image.id}
-                                            style={[
-                                                styles.preview,
-                                                { marginBottom: !index ? theme.spacing.small : 0 },
-                                            ]}
-                                            source={{ uri: image.url }}
-                                        />
-                                    );
-                                })}
-                            </View>
-                        </View>
-                        <Divider />
-                    </>
+                {activeOrganization.shedule ? (
+                    <View style={styles.groupBox}>
+                        <Typography bold variant='subtitle' style={styles.groupTitle}>
+                        {I18n.t('Work hours')}
+                        </Typography>
+                        <Shedule shedule={activeOrganization.shedule} />
+                    </View>
                 ) : null}
 
-                <View style={styles.section}>
-                    <View style={styles.sectionTitle}>
-                        <Typography style={styles.title} variant='h5'>
-                            Коктейли
-                        </Typography>
-                        <Divider variant='dot' />
-                        <Typography>средний чек ~ {activeOrganization.average_check} р.</Typography>
-                    </View>
-
-                    <Typography bold variant='subtitle' style={styles.groupTitle}>
-                        Стилистика
-                    </Typography>
-                    <Typography>{activeOrganization.bar_style}</Typography>
-                </View>
-
-                <View style={styles.section}>
-                    <View style={styles.sectionTitle}>
-                        <Typography style={styles.title} variant='h5'>
-                            Бар
-                        </Typography>
-                    </View>
-                    {activeOrganization.shedule ? (
-                        <View style={styles.groupBox}>
-                            <Typography bold variant='subtitle' style={styles.groupTitle}>
-                                Часы работы
-                            </Typography>
-                            <Shedule shedule={activeOrganization.shedule} />
-                        </View>
-                    ) : null}
-
-                    <Typography bold variant='subtitle' style={styles.groupTitle}>
-                        Адрес
-                    </Typography>
-                    <Typography>
-                        {activeOrganization?.address?.city}, {activeOrganization?.address?.street},
-                        {activeOrganization?.address?.building}
-                    </Typography>
-                </View>
-            </BottomSheetScrollView>
+                <Typography bold variant='subtitle' style={styles.groupTitle}>
+                {I18n.t('Address')}
+                </Typography>
+                <Typography>
+                    {activeOrganization?.address?.city}, {activeOrganization?.address?.street},
+                    {activeOrganization?.address?.building}
+                </Typography>
+            </View>
+        </BottomSheetScrollView>
     );
 };
 

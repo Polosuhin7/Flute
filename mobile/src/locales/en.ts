@@ -7,4 +7,18 @@ export const enLocale: LocalKeys = {
     friday: "friday",
     saturday: "saturday",
     sunday: "sunday",
+
+    Bars: 'Bars',
+    Bar: 'Bar',
+    Favorites: 'Favorites',
+    'Open now': 'Open now',
+    Route: 'Route',
+    Cocktails: 'Cocktails',
+    'average check': 'average check',
+    'Styles': 'Styles',
+    'Work hours': 'Work hours',
+    'Address': 'Address',
+    'Opened from': 'Opened from',
+    'Closed from': 'Closed from',
+    'Closed': 'Closed',
 }
