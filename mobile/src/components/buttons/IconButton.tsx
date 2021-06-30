@@ -1,15 +1,22 @@
-import { FontAwesome5 } from "@expo/vector-icons";
-import React from "react";
-import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
-import { useStyles } from "../../hooks/useStyles";
-import { Theme } from "../../types/ITheme";
+import {FontAwesome5} from '@expo/vector-icons';
+import React from 'react';
+import {Pressable, StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
+import Animated, {
+    interpolate,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring,
+    withTiming,
+} from 'react-native-reanimated';
+import {useStyles} from '../../hooks/useStyles';
+import {Theme} from '../../types/ITheme';
 
 const createContainerStyles = (theme: Theme) =>
     StyleSheet.create({
         base: {
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
         },
         primary: {
             backgroundColor: theme.color.primary,
@@ -18,8 +25,8 @@ const createContainerStyles = (theme: Theme) =>
             backgroundColor: theme.color.secondary,
         },
         active: {
-            backgroundColor: theme.color.active
-        }
+            backgroundColor: theme.color.active,
+        },
     });
 
 const createTextStyles = (theme: Theme) =>
@@ -75,8 +82,8 @@ const createTextSizeStyles = (theme: Theme) =>
         },
     });
 
-type ButtonSize = "lg" | "md" | "sm" | "xs";
-type ButtonVariant = "primary" | "secondary" | "active";
+type ButtonSize = 'lg' | 'md' | 'sm' | 'xs';
+type ButtonVariant = 'primary' | 'secondary' | 'active';
 
 export interface ButtonProps {
     onPress(e: any): void;
@@ -90,8 +97,8 @@ const IconButton: React.FC<ButtonProps> = ({
     onPress,
     icon,
     style,
-    variant = "primary",
-    size = "md",
+    variant = 'primary',
+    size = 'md',
     active,
 }) => {
     const containerStyles = useStyles(createContainerStyles);
@@ -99,17 +106,36 @@ const IconButton: React.FC<ButtonProps> = ({
     const buttonSizeStyle = useStyles(createButtonSizeStyles);
     const textSizeStyle = useStyles(createTextSizeStyles);
 
+    const scaleValue = useSharedValue(1);
+
+    const scaleStyles = useAnimatedStyle(() => ({
+        transform: [{scale: scaleValue.value}],
+    }));
+
     const iconStyles = [textStyles[variant], textSizeStyle[size]];
     if (active) {
         iconStyles.push(textStyles.active);
     }
+
+    const onPressIn = () => {
+        scaleValue.value = withSpring(0.95);
+    };
+    const onPressOut = () => {
+        scaleValue.value = withSpring(1);
+    };
+
     return (
-        <TouchableOpacity
-            activeOpacity={0.7}
-            style={[buttonSizeStyle[size], containerStyles.base, containerStyles[variant], style]}
-            onPress={onPress}>
+        <Pressable style={style} onPressIn={onPressIn} onPressOut={onPressOut} onPress={onPress}>
+            <Animated.View
+                style={[
+                    scaleStyles,
+                    buttonSizeStyle[size],
+                    containerStyles.base,
+                    containerStyles[variant],
+                ]}>
                 <FontAwesome5 style={iconStyles} name={icon} />
-        </TouchableOpacity>
+            </Animated.View>
+        </Pressable>
     );
 };
 

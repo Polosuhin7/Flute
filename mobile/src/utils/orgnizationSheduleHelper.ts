@@ -5,6 +5,11 @@ import { IOrganizationShedule } from "../types/organization/IOrganization";
 const sheduleDays = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
 
+export const isToday = (day: typeof sheduleDays[number]) => {
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay();
+    return sheduleDays[currentDay] === day;
+}
 export const textToOrganizationClosed = (_shedule: IOrganizationShedule) => {
     const {id, ...shedule} = _shedule || {};
     const currentDate = new Date();

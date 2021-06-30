@@ -21,4 +21,5 @@ export const enLocale: LocalKeys = {
     'Opened from': 'Opened from',
     'Closed from': 'Closed from',
     'Closed': 'Closed',
+    'more': 'more'
 }

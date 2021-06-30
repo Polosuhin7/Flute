@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IOrganization } from "../types/organization/IOrganization";
+import { getGeoDistance } from "../utils/getGeoDistance";
 import { isTodayOpen } from "../utils/orgnizationSheduleHelper";
 import { CrudModel } from "./Crud.model";
 
@@ -27,6 +28,7 @@ export class OrganizationModel extends CrudModel<IOrganization> implements IOrga
             const organizations = await this.getList();
             return organizations.filter(organization => isTodayOpen(organization.shedule));
         }
+        
 
         return await this.getList();;
 

@@ -1,22 +1,22 @@
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import * as Linking from "expo-linking";
-import I18n from "i18n-js";
-import { observer } from "mobx-react";
-import React, { useEffect, useRef } from "react";
-import { Image, Platform, StyleSheet, View } from "react-native";
-import Button from "../../components/buttons/Button";
-import IconButton from "../../components/buttons/IconButton";
-import Divider from "../../components/divider/Divider";
-import Typography from "../../components/typograpy/Typography";
-import { useStyles } from "../../hooks/useStyles";
-import { useTheme } from "../../providers/ThemeProvider";
-import stores from "../../stores/stores";
-import { Theme } from "../../types/ITheme";
-import { IOrganizationShedule } from "../../types/organization/IOrganization";
-import { getGeoDistance } from "../../utils/getGeoDistance";
-import { textToOrganizationClosed } from "../../utils/orgnizationSheduleHelper";
+import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import * as Linking from 'expo-linking';
+import I18n from 'i18n-js';
+import {observer} from 'mobx-react';
+import React, {useEffect, useRef} from 'react';
+import {Image, Platform, StyleSheet, View} from 'react-native';
+import Button from '../../components/buttons/Button';
+import IconButton from '../../components/buttons/IconButton';
+import Divider from '../../components/divider/Divider';
+import Typography from '../../components/typograpy/Typography';
+import {useStyles} from '../../hooks/useStyles';
+import {useTheme} from '../../providers/ThemeProvider';
+import stores from '../../stores/stores';
+import {Theme} from '../../types/ITheme';
+import {IOrganizationShedule} from '../../types/organization/IOrganization';
+import {getGeoDistance} from '../../utils/getGeoDistance';
+import {isToday, textToOrganizationClosed} from '../../utils/orgnizationSheduleHelper';
 
-const { organization, app, navigation } = stores;
+const {organization, app, navigation} = stores;
 
 const createStyle = (theme: Theme) =>
     StyleSheet.create({
@@ -24,13 +24,13 @@ const createStyle = (theme: Theme) =>
             color: theme.color.text,
         },
         floatHeader: {
-            position: "absolute",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+            position: 'absolute',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
             top: 0,
             left: 0,
-            width: "100%",
+            width: '100%',
             zIndex: 2000,
             backgroundColor: theme.color.layout,
             paddingVertical: theme.spacing.double,
@@ -39,16 +39,16 @@ const createStyle = (theme: Theme) =>
             color: theme.color.active,
         },
         subtitleBox: {
-            flexDirection: "row",
+            flexDirection: 'row',
             paddingTop: theme.spacing.base,
         },
         secondaryText: {
             color: theme.color.secondary,
         },
         buttonGroupBox: {
-            flexDirection: "row",
+            flexDirection: 'row',
             paddingTop: theme.spacing.double,
-            justifyContent: "space-between",
+            justifyContent: 'space-between',
         },
         buttonLike: {
             marginLeft: theme.spacing.base,
@@ -60,7 +60,7 @@ const createStyle = (theme: Theme) =>
             paddingTop: theme.spacing.double,
         },
         imageBox: {
-            flexDirection: "row",
+            flexDirection: 'row',
             paddingTop: theme.spacing.double,
         },
         image: {
@@ -82,8 +82,8 @@ const createStyle = (theme: Theme) =>
         },
         priceBox: {},
         sectionTitle: {
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
+            alignItems: 'center',
             paddingBottom: theme.spacing.double,
         },
         groupTitle: {
@@ -92,7 +92,7 @@ const createStyle = (theme: Theme) =>
 
         workHours: {
             paddingBottom: theme.spacing.base,
-            textTransform: "capitalize",
+            textTransform: 'capitalize',
         },
     });
 
@@ -100,16 +100,17 @@ interface SheduleProps {
     shedule: IOrganizationShedule;
 }
 
-const Shedule: React.FC<SheduleProps> = ({ shedule }) => {
+const Shedule: React.FC<SheduleProps> = ({shedule}) => {
     const styles = useStyles(createStyle);
-    const { id, ...weekDays } = shedule;
+    const {theme} = useTheme();
+    const {id, ...weekDays} = shedule;
     return (
         <View>
-            {Object.entries(weekDays).map(([day, { time_from = "", time_to = "" }]) => {
+            {Object.entries(weekDays).map(([day, {time_from = '', time_to = ''}]) => {
                 return (
-                    <Typography style={styles.workHours} key={`index-${day}`}>
-                        {I18n.t(day)}: {time_from.split(":").slice(0, 2).join(":")} -{" "}
-                        {time_to.split(":").slice(0, 2).join(":")}
+                    <Typography style={[styles.workHours, {color: isToday(day) ? theme.color.active : theme.color.text}]} key={`index-${day}`}>
+                        {I18n.t(day)}: {time_from.split(':').slice(0, 2).join(':')} -{' '}
+                        {time_to.split(':').slice(0, 2).join(':')}
                     </Typography>
                 );
             })}
@@ -118,14 +119,14 @@ const Shedule: React.FC<SheduleProps> = ({ shedule }) => {
 };
 
 const OrganizationItem: React.FC<any> = () => {
-    const { activeOrganization, toggleLike, isLiked } = organization;
-    const { location } = app;
+    const {activeOrganization, toggleLike, isLiked} = organization;
+    const {location} = app;
     const styles = useStyles(createStyle);
-    const { theme } = useTheme();
+    const {theme} = useTheme();
     const ScrollViewRef = useRef<any>();
 
     useEffect(() => {
-        ScrollViewRef?.current?.scrollTo({ y: 0 });
+        ScrollViewRef?.current?.scrollTo({y: 0});
     }, [activeOrganization?.id]);
 
     if (!activeOrganization) return null;
@@ -135,17 +136,20 @@ const OrganizationItem: React.FC<any> = () => {
     };
 
     const onDirection = () => {
-        const { latitude: lt, longitude: lg } = activeOrganization.coordinate!;
-        const { latitude, longitude } = app.location.coords;
+        const {latitude: lt, longitude: lg} = activeOrganization.coordinate!;
+        const {latitude, longitude} = app.location.coords;
         //open  ya maps
         // Linking.openURL(`yandexmaps://maps.yandex.com/?rtt=auto&rtext=${lt}, ${lg}~${latitude}, ${longitude}, &z=12`);
         // open native maps
-        var scheme = Platform.OS === "ios" ? "maps:" : "geo:";
+        var scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
         var url = scheme + `saddr=${lt}, ${lg}&daddr=${latitude}, ${longitude}, &z=12`;
         Linking.openURL(url);
     };
     return (
-        <BottomSheetScrollView ref={ScrollViewRef} snapToInterval={50} showsHorizontalScrollIndicator={false}>
+        <BottomSheetScrollView
+            ref={ScrollViewRef}
+            snapToInterval={50}
+            showsHorizontalScrollIndicator={false}>
             <Typography style={styles.title} variant='h3'>
                 {activeOrganization?.title}
             </Typography>
@@ -166,17 +170,20 @@ const OrganizationItem: React.FC<any> = () => {
                 <IconButton
                     active={isLiked}
                     style={styles.buttonLike}
-                    icon={isLiked ? "heartbeat" : "heart"}
+                    icon={isLiked ? 'heartbeat' : 'heart'}
                     onPress={toggleLike}
                 />
                 <IconButton style={styles.buttonShare} icon='phone' onPress={callPhone} />
             </View>
             <Divider />
-            <Typography style={styles.secondaryText}>{activeOrganization.description}</Typography>
+            <Typography numberOfLines={4} style={styles.secondaryText}>{activeOrganization.description}</Typography>
             {activeOrganization.images.length ? (
                 <>
                     <View style={styles.imageBox}>
-                        <Image style={styles.image} source={{ uri: activeOrganization.images[0].url }} />
+                        <Image
+                            style={styles.image}
+                            source={{uri: activeOrganization.images[0].url}}
+                        />
                         <View style={styles.previewBox}>
                             {activeOrganization.images.slice(1, 3).map((image, index) => {
                                 return (
@@ -184,9 +191,9 @@ const OrganizationItem: React.FC<any> = () => {
                                         key={image.id}
                                         style={[
                                             styles.preview,
-                                            { marginBottom: !index ? theme.spacing.small : 0 },
+                                            {marginBottom: !index ? theme.spacing.small : 0},
                                         ]}
-                                        source={{ uri: image.url }}
+                                        source={{uri: image.url}}
                                     />
                                 );
                             })}
@@ -202,7 +209,9 @@ const OrganizationItem: React.FC<any> = () => {
                         {I18n.t('Cocktails')}
                     </Typography>
                     <Divider variant='dot' />
-                    <Typography>{I18n.t('average check')} ~ {activeOrganization.average_check} р.</Typography>
+                    <Typography>
+                        {I18n.t('average check')} ~ {activeOrganization.average_check} р.
+                    </Typography>
                 </View>
 
                 <Typography bold variant='subtitle' style={styles.groupTitle}>
@@ -220,14 +229,14 @@ const OrganizationItem: React.FC<any> = () => {
                 {activeOrganization.shedule ? (
                     <View style={styles.groupBox}>
                         <Typography bold variant='subtitle' style={styles.groupTitle}>
-                        {I18n.t('Work hours')}
+                            {I18n.t('Work hours')}
                         </Typography>
                         <Shedule shedule={activeOrganization.shedule} />
                     </View>
                 ) : null}
 
                 <Typography bold variant='subtitle' style={styles.groupTitle}>
-                {I18n.t('Address')}
+                    {I18n.t('Address')}
                 </Typography>
                 <Typography>
                     {activeOrganization?.address?.city}, {activeOrganization?.address?.street},
@@ -239,3 +248,4 @@ const OrganizationItem: React.FC<any> = () => {
 };
 
 export default observer(OrganizationItem);
+

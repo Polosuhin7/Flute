@@ -32,7 +32,7 @@ class OrganizationStore implements IOrganizationStore {
     error: IError | null = null;
     data: IOrganization[] = [];
     loading: boolean = false;
-    filter: 'favorite' | 'open-now' | '' = '';
+    filter: OrganizationFilterType = '';
     activeOrganization: IOrganization | null = null
     favoriteOrganizations: IOrganization[] = []
 
@@ -79,7 +79,6 @@ class OrganizationStore implements IOrganizationStore {
         try {
             this.loading = true;
             const data = await this.model.toggleFavorite(findedOrganization);
-            console.log('data', data);
             runInAction(() => {
                 this.favoriteOrganizations = data;
             })
