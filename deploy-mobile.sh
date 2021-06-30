@@ -1,2 +1,2 @@
 #!/bin/sh
-git subtree push --prefix mobile heroku-mobule master
+git subtree push --prefix mobile heroku-mobile master
