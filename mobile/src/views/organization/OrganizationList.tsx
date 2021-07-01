@@ -1,8 +1,9 @@
-import {BottomSheetFlatList, BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import {BottomSheetFlatList, BottomSheetScrollView, BottomSheetView} from '@gorhom/bottom-sheet';
 import I18n from 'i18n-js';
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {ListRenderItemInfo, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ListRenderItemInfo, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 import Button from '../../components/buttons/Button';
 import Divider from '../../components/divider/Divider';
 import Typography from '../../components/typograpy/Typography';
@@ -16,7 +17,9 @@ import {textToOrganizationClosed} from '../../utils/orgnizationSheduleHelper';
 
 const createStyles = (theme: Theme) =>
     StyleSheet.create({
-        container: {},
+        container: {
+            paddingHorizontal: theme.spacing.double,
+        },
         title: {
             paddingBottom: theme.spacing.double,
         },
@@ -24,6 +27,7 @@ const createStyles = (theme: Theme) =>
             flexDirection: 'row',
             maxHeight: 60,
             paddingBottom: theme.spacing.double,
+            zIndex: 1000500
         },
         filterItem: {
             marginRight: theme.spacing.base,
@@ -67,46 +71,44 @@ const OrganizationList: React.FC<IOrganizationListProps> = ({onOrganizationSelec
     const {location} = app;
     return (
         <>
+        <View style={styles.container}>
             <Typography style={styles.title} variant='h4'>
                 {I18n.t('Bars')}
             </Typography>
             <View style={styles.filterGroup}>
-
-            <BottomSheetScrollView
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}
-                >
-                <Button
-                    style={styles.filterItem}
-                    size='sm'
-                    variant={filter === 'favorite' ? 'outlined-active' : 'outlined-secondary'}
-                    text={I18n.t('Favorites')}
-                    icon='heart'
-                    onPress={() => toogleFileter('favorite')}
-                />
-                <Button
-                    style={styles.filterItem}
-                    size='sm'
-                    variant={filter === 'open-now' ? 'outlined-active' : 'outlined-secondary'}
-                    text={I18n.t('Open now')}
-                    icon='clock'
-                    onPress={() => toogleFileter('open-now')}
-                />
-                <Button
-                    style={styles.filterItem}
-                    size='sm'
-                    variant={filter === 'near' ? 'outlined-active' : 'outlined-secondary'}
-                    text={I18n.t('Near')}
-                    icon='map'
-                    onPress={() => toogleFileter('near')}
-                />
-            </BottomSheetScrollView>
+                <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
+                    <Button
+                        style={styles.filterItem}
+                        size='sm'
+                        variant={filter === 'favorite' ? 'outlined-active' : 'outlined-secondary'}
+                        text={I18n.t('Favorites')}
+                        icon='heart'
+                        onPress={() => toogleFileter('favorite')}
+                    />
+                    <Button
+                        style={styles.filterItem}
+                        size='sm'
+                        variant={filter === 'open-now' ? 'outlined-active' : 'outlined-secondary'}
+                        text={I18n.t('Open now')}
+                        icon='clock'
+                        onPress={() => toogleFileter('open-now')}
+                    />
+                    <Button
+                        style={styles.filterItem}
+                        size='sm'
+                        variant={filter === 'near' ? 'outlined-active' : 'outlined-secondary'}
+                        text={I18n.t('Near')}
+                        icon='map'
+                        onPress={() => toogleFileter('near')}
+                    />
+                </ScrollView>
             </View>
-
+            </View>
             <BottomSheetFlatList
+                style={styles.container}
                 data={list}
-                refreshing={loading}
-                onRefresh={fetchData}
+                // refreshing={loading}
+                // onRefresh={fetchData}
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(card) => card.title}

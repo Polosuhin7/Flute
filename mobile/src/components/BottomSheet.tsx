@@ -1,15 +1,11 @@
-import * as React from "react";
-import { ReactNode, useEffect, useRef } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
 import Bottom from "@gorhom/bottom-sheet";
+import * as React from "react";
+import { useEffect, useRef } from "react";
+import { StyleSheet, View } from "react-native";
 import { useStyles } from "../hooks/useStyles";
 import { ESheetState } from "../types/ESheetState";
 import { Theme } from "../types/ITheme";
-import IconButton from "./buttons/IconButton";
 
-const { width, height } = Dimensions.get("window");
-
-const HEADER_HEIGHT = 85;
 const createStyle = (theme: Theme) =>
     StyleSheet.create({
         container: {
@@ -17,7 +13,7 @@ const createStyle = (theme: Theme) =>
         },
         content: {
             backgroundColor: theme.color.layout,
-            paddingHorizontal: theme.spacing.double,
+            // paddingHorizontal: theme.spacing.double,
             borderTopRightRadius: theme.radius.double,
             borderTopLeftRadius: theme.radius.double,
         },
@@ -74,7 +70,7 @@ const BottomSheet: React.FC<IBottomSheetProps> = ({
             style={styles.content}
             onChange={_onChange}
             {...{ ref, index: state, snapPoints }}>
-            {children}
+                {children}
         </Bottom>
     );
 };

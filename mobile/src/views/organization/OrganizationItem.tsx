@@ -20,6 +20,9 @@ const {organization, app, navigation} = stores;
 
 const createStyle = (theme: Theme) =>
     StyleSheet.create({
+        container: {
+            paddingHorizontal: theme.spacing.double
+        },
         title: {
             color: theme.color.text,
         },
@@ -146,7 +149,9 @@ const OrganizationItem: React.FC<any> = () => {
         Linking.openURL(url);
     };
     return (
+
         <BottomSheetScrollView
+            style={styles.container}
             ref={ScrollViewRef}
             snapToInterval={50}
             showsHorizontalScrollIndicator={false}>
