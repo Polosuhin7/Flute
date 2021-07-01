@@ -21,7 +21,8 @@ export const ruLocale = {
     'Opened from': 'Откроется',
     'Closed from': 'Закроется',
     'Closed': 'Закрыто',
-    'more': 'далее'
+    'more': 'далее',
+    'Near': 'Ближайшие'
 };
 
 export type LocalKeys = typeof ruLocale;

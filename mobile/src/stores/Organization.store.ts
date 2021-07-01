@@ -17,15 +17,17 @@ export interface IOrganizationStore {
     toogleFileter(filter: OrganizationFilterType): void;
     setActiveOrganization(organization: IOrganization): void
     toggleLike(): void
-    fetchData(): void
+    fetchData(): Promise<IOrganization[] | undefined>
 }
 
 class OrganizationStore implements IOrganizationStore {
 
     private model = API.organization;
+    private rootStore: IRootStore
 
-    constructor() {
+    constructor(rootStore: IRootStore) {
         makeAutoObservable(this);
+        this.rootStore = rootStore
         this.getFavoriteOrganizations();
     }
 
@@ -106,11 +108,12 @@ class OrganizationStore implements IOrganizationStore {
     fetchData = async () => {
         try {
             this.loading = true;
-            const data = await this.model.getFilteredData(this.filter);
+            const {app} = this.rootStore
+            const data = await this.model.getFilteredData(this.filter, app.location);
             runInAction(() => {
                 this.data = toJS(data);
-                
             })
+            return data;
         } catch(error) {
             this.error = error;
         } finally {

@@ -1,18 +1,18 @@
-import { BottomSheetFlatList } from "@gorhom/bottom-sheet";
-import I18n from "i18n-js";
-import { observer } from "mobx-react";
-import * as React from "react";
-import { ListRenderItemInfo, StyleSheet, TouchableOpacity, View } from "react-native";
-import Button from "../../components/buttons/Button";
-import Divider from "../../components/divider/Divider";
-import Typography from "../../components/typograpy/Typography";
-import { useStyles } from "../../hooks/useStyles";
-import stores from "../../stores/stores";
-import { ESheetState } from "../../types/ESheetState";
-import { Theme } from "../../types/ITheme";
-import { IOrganization } from "../../types/organization/IOrganization";
-import { getGeoDistance } from "../../utils/getGeoDistance";
-import { textToOrganizationClosed } from "../../utils/orgnizationSheduleHelper";
+import {BottomSheetFlatList, BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import I18n from 'i18n-js';
+import {observer} from 'mobx-react';
+import * as React from 'react';
+import {ListRenderItemInfo, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import Button from '../../components/buttons/Button';
+import Divider from '../../components/divider/Divider';
+import Typography from '../../components/typograpy/Typography';
+import {useStyles} from '../../hooks/useStyles';
+import stores from '../../stores/stores';
+import {ESheetState} from '../../types/ESheetState';
+import {Theme} from '../../types/ITheme';
+import {IOrganization} from '../../types/organization/IOrganization';
+import {getGeoDistance} from '../../utils/getGeoDistance';
+import {textToOrganizationClosed} from '../../utils/orgnizationSheduleHelper';
 
 const createStyles = (theme: Theme) =>
     StyleSheet.create({
@@ -21,9 +21,9 @@ const createStyles = (theme: Theme) =>
             paddingBottom: theme.spacing.double,
         },
         filterGroup: {
-            flexDirection: "row",
-            // height: 50,
-            paddingBottom: theme.spacing.triple,
+            flexDirection: 'row',
+            maxHeight: 60,
+            paddingBottom: theme.spacing.double,
         },
         filterItem: {
             marginRight: theme.spacing.base,
@@ -41,7 +41,7 @@ const createStyles = (theme: Theme) =>
             paddingBottom: theme.spacing.base,
         },
         descriptionContainer: {
-            flexDirection: "row",
+            flexDirection: 'row',
         },
         destinatioText: {
             color: theme.color.active,
@@ -57,36 +57,50 @@ const createStyles = (theme: Theme) =>
             color: theme.color.secondary,
         },
     });
-const { organization, navigation, app } = stores;
+const {organization, navigation, app} = stores;
 interface IOrganizationListProps {
-    onOrganizationSelect(val: IOrganization): void
+    onOrganizationSelect(val: IOrganization): void;
 }
 const OrganizationList: React.FC<IOrganizationListProps> = ({onOrganizationSelect}) => {
     const styles = useStyles(createStyles);
-    const { list, fetchData, loading, filter, toogleFileter } = organization;
-    const { location } = app;
+    const {list, fetchData, loading, filter, toogleFileter} = organization;
+    const {location} = app;
     return (
         <>
             <Typography style={styles.title} variant='h4'>
                 {I18n.t('Bars')}
             </Typography>
             <View style={styles.filterGroup}>
+
+            <BottomSheetScrollView
+                showsHorizontalScrollIndicator={false}
+                horizontal={true}
+                >
                 <Button
                     style={styles.filterItem}
                     size='sm'
-                    variant={filter === "favorite" ? "outlined-active" : "outlined-secondary"}
+                    variant={filter === 'favorite' ? 'outlined-active' : 'outlined-secondary'}
                     text={I18n.t('Favorites')}
                     icon='heart'
-                    onPress={() => toogleFileter("favorite")}
+                    onPress={() => toogleFileter('favorite')}
                 />
                 <Button
                     style={styles.filterItem}
                     size='sm'
-                    variant={filter === "open-now" ? "outlined-active" : "outlined-secondary"}
+                    variant={filter === 'open-now' ? 'outlined-active' : 'outlined-secondary'}
                     text={I18n.t('Open now')}
                     icon='clock'
-                    onPress={() => toogleFileter("open-now")}
+                    onPress={() => toogleFileter('open-now')}
                 />
+                <Button
+                    style={styles.filterItem}
+                    size='sm'
+                    variant={filter === 'near' ? 'outlined-active' : 'outlined-secondary'}
+                    text={I18n.t('Near')}
+                    icon='map'
+                    onPress={() => toogleFileter('near')}
+                />
+            </BottomSheetScrollView>
             </View>
 
             <BottomSheetFlatList
@@ -96,12 +110,12 @@ const OrganizationList: React.FC<IOrganizationListProps> = ({onOrganizationSelec
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(card) => card.title}
-                renderItem={({ item }: ListRenderItemInfo<IOrganization>) => (
+                renderItem={({item}: ListRenderItemInfo<IOrganization>) => (
                     <TouchableOpacity
                         onPress={() => {
                             organization.setActiveOrganization(item);
                             onOrganizationSelect(item);
-                            navigation.navigate("organizationItem", ESheetState.HALF);
+                            navigation.navigate('organizationItem', ESheetState.HALF);
                         }}>
                         <View style={styles.item} key={item.id + item.title}>
                             <View style={styles.titleContainer}>

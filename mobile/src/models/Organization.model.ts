@@ -1,3 +1,4 @@
+import { LocationObject } from 'expo-location';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IOrganization } from "../types/organization/IOrganization";
 import { getGeoDistance } from "../utils/getGeoDistance";
@@ -15,7 +16,7 @@ export class OrganizationModel extends CrudModel<IOrganization> implements IOrga
         super("/organizations");
     }
     
-    async getFilteredData(filter?: string): Promise<IOrganization[]> {
+    async getFilteredData(filter?: string, userLocation?: LocationObject): Promise<IOrganization[]> {
         
         if(!filter) {
             return await this.getList();
@@ -28,7 +29,10 @@ export class OrganizationModel extends CrudModel<IOrganization> implements IOrga
             const organizations = await this.getList();
             return organizations.filter(organization => isTodayOpen(organization.shedule));
         }
-        
+        if(filter === 'near' && userLocation) {
+            const organizations = await this.getList();
+            return organizations.sort((a: IOrganization, b: IOrganization) => +getGeoDistance(userLocation, a.coordinate) - +getGeoDistance(userLocation, b.coordinate));
+        }
 
         return await this.getList();;
 

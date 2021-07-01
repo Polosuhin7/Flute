@@ -14,7 +14,7 @@ export interface IRootStore {
 class RootStore implements IRootStore {
     public app: IAppStore = new AppStore(this);
     public auth: IAuthStore = new AuthStore();
-    public organization: IOrganizationStore = new OrganizationStore();
+    public organization: IOrganizationStore = new OrganizationStore(this);
     public navigation: INavigationStore = new NavigationStore();
     
 }
