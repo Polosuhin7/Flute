@@ -5,8 +5,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build:android": "expo build:android -t apk ",
-    "build:ios": "expo build:ios",
+    "build:android": "expo build:android -t apk",
+    "build:ios": "expo build:ios -t archive",
+    "build:ios:adhoc": "expo build:ios --provisioning-profile-path ./ios/Flute_Ad_Hoc.mobileprovision",
     "eject": "expo eject"
   },
   "dependencies": {

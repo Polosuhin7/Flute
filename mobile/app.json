@@ -43,7 +43,7 @@
       "favicon": "./assets/favicon.png"
     }
   },
-  "buildss": {
+  "builds": {
     "android": {
       "release": {
         "workflow": "managed"
