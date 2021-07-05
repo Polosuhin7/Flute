@@ -19,8 +19,8 @@ import Organizations from "./src/views/organization/Organizations";
 
 moment.locale("ru");
 i18n.translations = {
-    en: ruLocale,
-    ja: enLocale,
+    ru: ruLocale,
+    en: enLocale,
 };
 i18n.locale = Localization.locale;
 i18n.fallbacks = true;
