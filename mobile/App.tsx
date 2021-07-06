@@ -55,7 +55,7 @@ function App() {
         })();
     }, []);
 
-    if (!ready || !loaded) {
+    if (!ready && !loaded) {
         return (
             <View
                 style={{flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 150}}>
