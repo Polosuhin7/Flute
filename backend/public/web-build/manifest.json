@@ -4,7 +4,7 @@
   "lang": "en",
   "name": "Flue",
   "short_name": "Flue",
-  "start_url": "/?utm_source=web_app_manifest",
+  "start_url": "/web-build/index.html?utm_source=web_app_manifest",
   "orientation": "portrait",
   "related_applications": [
     {
