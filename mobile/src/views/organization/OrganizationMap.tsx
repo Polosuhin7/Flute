@@ -96,6 +96,7 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
                 fullscreenControl: false,
                 mapTypeControl: false,
                 streetViewControl: false,
+                zoomControl: false,
                 panControl: false,
                 styles: theme.id === 'dark' ? customStyle : [],
             }
