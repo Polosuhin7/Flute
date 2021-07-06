@@ -39,11 +39,13 @@
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
+    "react-native-swipe-gestures": "^1.0.5",
     "react-native-web": "~0.13.12",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@types/google.maps": "^3.45.4",
     "@types/i18n-js": "^3.8.1",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",

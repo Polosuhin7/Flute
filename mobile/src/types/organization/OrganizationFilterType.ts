@@ -1,1 +1,1 @@
-export type OrganizationFilterType = 'favorite' | 'open-now' | 'near' | ''
+export type OrganizationFilterType = 'favorite' | 'open-now' | 'togo' |'veranda' | ''

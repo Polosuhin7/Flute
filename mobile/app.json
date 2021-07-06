@@ -40,7 +40,14 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "name": "Flue",
+      "favicon": "./assets/favicon.png",
+      "backgroundColor":  "#2E2F30",
+      "splash": {
+        "image": "./assets/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#2E2F30"
+      }
     }
   },
   "builds": {

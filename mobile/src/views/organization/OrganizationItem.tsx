@@ -1,9 +1,9 @@
-import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import * as Linking from 'expo-linking';
 import I18n from 'i18n-js';
 import {observer} from 'mobx-react';
 import React, {useEffect, useRef} from 'react';
 import {Image, Platform, StyleSheet, View} from 'react-native';
+import BottomSheetScrollView from '../../components/BottomSheet/BottomSheetScrollView';
 import Button from '../../components/buttons/Button';
 import IconButton from '../../components/buttons/IconButton';
 import Divider from '../../components/divider/Divider';
@@ -139,13 +139,17 @@ const OrganizationItem: React.FC<any> = () => {
     };
 
     const onDirection = () => {
+  
         const {latitude: lt, longitude: lg} = activeOrganization.coordinate!;
         const {latitude, longitude} = app.location.coords;
+        if(Platform.OS === 'web') {
+            return window.open(`https://www.google.com/maps/dir/?api=1&origin=${latitude}, ${longitude}&destination=${lt}, ${lg}`, '_blank')
+        }
         //open  ya maps
         // Linking.openURL(`yandexmaps://maps.yandex.com/?rtt=auto&rtext=${lt}, ${lg}~${latitude}, ${longitude}, &z=12`);
         // open native maps
-        var scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
-        var url = scheme + `saddr=${lt}, ${lg}&daddr=${latitude}, ${longitude}, &z=12`;
+        const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
+        const url = scheme + `saddr=${lt}, ${lg}&daddr=${latitude}, ${longitude}, &z=12`;
         Linking.openURL(url);
     };
     return (

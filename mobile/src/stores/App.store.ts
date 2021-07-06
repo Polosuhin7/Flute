@@ -21,7 +21,18 @@ class AppStore implements IAppStore {
     rootStore: IRootStore;
     error: IError | null = null;
     ready: boolean = false
-    location: any = [];
+    location: LocationObject ={
+        coords: {
+            latitude: 50,
+            longitude: 50,
+            altitude: null,
+            accuracy: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed:  null,
+        },
+        timestamp: Date.now()
+    };
 
     constructor(rootStore: IRootStore) {
         makeAutoObservable(this);

@@ -9,7 +9,7 @@ export const ruLocale = {
 
     Bars: 'Бары',
     Bar: 'Бар',
-    Favorites: 'Избранные',
+    'Favorites': 'Избранные',
     'Open now': 'Открыто сейчас',
     Route: 'Маршрут',
     Cocktails: 'Коктейли',
@@ -22,7 +22,9 @@ export const ruLocale = {
     'Closed from': 'Закроется',
     'Closed': 'Закрыто',
     'more': 'далее',
-    'Near': 'Ближайшие'
+    'Near': 'Ближайшие',
+    "To go": 'С собой',
+    "Veranda": 'Веранда'
 };
 
 export type LocalKeys = typeof ruLocale;

@@ -29,9 +29,13 @@ export class OrganizationModel extends CrudModel<IOrganization> implements IOrga
             const organizations = await this.getList();
             return organizations.filter(organization => isTodayOpen(organization.shedule));
         }
-        if(filter === 'near' && userLocation) {
+        if(filter === 'veranda') {
             const organizations = await this.getList();
-            return organizations.sort((a: IOrganization, b: IOrganization) => +getGeoDistance(userLocation, a.coordinate) - +getGeoDistance(userLocation, b.coordinate));
+            return organizations.filter(organization => organization.veranda);
+        }
+        if(filter === 'togo') {
+            const organizations = await this.getList();
+            return organizations.filter(organization => organization.togo);
         }
 
         return await this.getList();;

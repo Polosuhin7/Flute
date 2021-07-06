@@ -4,13 +4,14 @@ import { AvailableThemes, Themes } from '../themes';
 import { LightTheme } from '../themes/LightTheme';
 import { Theme } from '../types/ITheme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { DarkTheme } from '../themes/DarkTheme';
 interface ProvidedValue {
   theme: Theme;
   setTheme: (theme: AvailableThemes) => void;
 }
 
 const Context = React.createContext<ProvidedValue>({
-  theme: LightTheme,
+  theme: DarkTheme,
   setTheme: () => {
     console.log('ThemeProvider is not rendered!');
   },

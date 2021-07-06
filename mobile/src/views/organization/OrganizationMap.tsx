@@ -43,83 +43,28 @@ const createStyle = (theme: Theme) =>
         },
         currentLocationButton: {
             position: 'absolute',
-            top: 75,
+            top: 25,
             right: 15,
             zIndex: 500,
         },
         menuButton: {
             position: 'absolute',
-            top: 75,
+            top: 25,
             left: 15,
             zIndex: 500,
         },
     });
 
-interface ICustomMarkerProps {
-    onOrganizationSelect: (val: IOrganization) => void;
-    organization: IOrganization;
-}
-const CustomMarker: React.FC<ICustomMarkerProps> = observer(
-    ({organization: _organization, onOrganizationSelect}) => {
-        const styles = useStyles(createStyle);
-        const {theme} = useTheme();
-        const MarkerRef = useRef<any>();
-        useEffect(() => {
-            MarkerRef.current?.redraw();
-        }, [organization.activeOrganization?.id, theme.id]);
-        return (
-            <Marker
-                ref={MarkerRef}
-                onPress={() => {
-                    organization.setActiveOrganization(_organization);
-                    onOrganizationSelect(_organization);
-                }}
-                tracksViewChanges={false}
-                key={_organization.title + _organization.id}
-                {...{coordinate: _organization.coordinate}}>
-                <View>
-                    {organization.activeOrganization?.id === _organization.id ? (
-                        <View style={styles.markerBox}>
-                            <IconButton size='sm' onPress={() => null} active icon='cocktail' />
-                            {/* <Image onLoad={() => MarkerRef.current?.redraw()} style={{ width: 40, height: 40, borderRadius: 40 }} source={require('../../../assets/icon.png')} /> */}
-                        </View>
-                    ) : (
-                        <View style={styles.markerBox}>
-                            <View
-                                style={[
-                                    styles.marker,
-                                    {
-                                        backgroundColor: theme.color.primary,
-                                    },
-                                ]}
-                            />
-                        </View>
-                    )}
-                </View>
-            </Marker>
-        );
-    }
-);
-
 interface IOrganizationMapProps {
     onOrganizationSelect(val: IOrganization): void;
 }
-let _mapView: MapView | null;
+let map: google.maps.Map;
 const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}) => {
     const {theme, setTheme} = useTheme();
     const colorScheme = theme.id;
     const styles = useStyles(createStyle);
     const {activeOrganization, list} = organization;
-    const {
-        location: {coords},
-        setLocation,
-    } = app;
-
-    const [mapRegion, setMapRegion] = useState<Region>({
-        ...coords,
-        latitudeDelta: 0.3,
-        longitudeDelta: 0.3,
-    });
+    const {location: {coords}} = app;
 
     useEffect(() => {
         if (activeOrganization?.coordinate.latitude) {
@@ -128,20 +73,64 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
     }, [activeOrganization?.id]);
 
     const moveTo = ({longitude, latitude}: ICoordinate) => {
-        if (_mapView) {
-            _mapView.animateCamera({center: {...mapRegion, longitude, latitude}}, {duration: 300});
+        if (map) {
+            map.moveCamera({center: {lat: latitude, lng: longitude}});
         }
     };
 
-    const setUserCurrentLocation = async () => {
-        try {
-            moveTo(app.location.coords);
-            setLocation(await Location.getCurrentPositionAsync({}));
-        } catch (error) {}
+    const setUserCurrentLocation =  () => {
+        initMap();
     };
 
+    useEffect(() => {
+        initMap();
+    }, [list]);
+
+    function initMap() {
+        map = new google.maps.Map(
+            document.getElementById('map') as HTMLElement,
+            {
+                backgroundColor: theme.color.layout,
+                center: {lat: coords.latitude, lng: coords.longitude},
+                zoom: 8,
+                fullscreenControl: false,
+                mapTypeControl: false,
+                streetViewControl: false,
+                panControl: false,
+                styles: customStyle,
+            }
+        );
+        
+        const icon = {
+            path: " M25, 50a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0",
+            fillColor: theme.color.secondary,
+            fillOpacity: 1,
+            strokeColor: theme.color.primary,
+            strokeWeight: 2,
+            rotation: 0,
+            scale: 0.25,
+            translateX: '-50%',
+            translateY: '-50%',
+            anchor: new google.maps.Point(15, 30),
+          };
+        list.forEach((_organization) => {
+            const marker = new google.maps.Marker({
+                position: {
+                    lat: _organization.coordinate.latitude,
+                    lng: _organization.coordinate.longitude,
+                },
+                map,
+                icon,
+            });
+            marker.addListener('click', () => {
+                organization.setActiveOrganization(_organization);
+                onOrganizationSelect(_organization);
+            });
+        });
+    }
+
     return (
-        <View style={styles.container}>
+        <View>
             {theme.id === 'dark' ? (
                 <IconButton
                     size='md'
@@ -165,29 +154,7 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
                 icon='compass'
                 onPress={setUserCurrentLocation}
             />
-            <MapView
-                ref={(ref) => {
-                    _mapView = ref;
-                }}
-                onRegionChange={debounce(setMapRegion, 500)}
-                initialRegion={mapRegion}
-                minZoomLevel={3}
-                zoomEnabled
-                showsUserLocation
-                showsCompass={false}
-                showsMyLocationButton={false}
-                zoomControlEnabled
-                provider={PROVIDER_GOOGLE}
-                style={styles.map}
-                customMapStyle={colorScheme === 'dark' ? customStyle : []}>
-                {list.map((organization) => {
-                    return (
-                        <CustomMarker
-                            {...{key: organization.title, organization, onOrganizationSelect}}
-                        />
-                    );
-                })}
-            </MapView>
+            <div style={{height: '100vh', width: '100%'}} id='map' />
         </View>
     );
 };

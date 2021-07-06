@@ -2,9 +2,9 @@ import Bottom from "@gorhom/bottom-sheet";
 import * as React from "react";
 import { useEffect, useRef } from "react";
 import { StyleSheet, View } from "react-native";
-import { useStyles } from "../hooks/useStyles";
-import { ESheetState } from "../types/ESheetState";
-import { Theme } from "../types/ITheme";
+import { useStyles } from "../../hooks/useStyles";
+import { ESheetState } from "../../types/ESheetState";
+import { Theme } from "../../types/ITheme";
 
 const createStyle = (theme: Theme) =>
     StyleSheet.create({
