@@ -24,5 +24,13 @@ export const enLocale: LocalKeys = {
     'more': 'more',
     'Near': 'Near',
     "To go": 'To go',
-    "Veranda": 'Veranda'
+    "Veranda": 'Veranda',
+    "Dark": 'Dark',
+    "Light": 'Light',
+    "Theme": 'Theme',
+    "About us": 'About us',
+    "Menu": 'Menu',
+    "Report bug": 'Report bug',
+    "About project": 'About project',
+    'Connect us': 'Connect us'
 }

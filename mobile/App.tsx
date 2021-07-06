@@ -1,18 +1,18 @@
-import {useFonts} from 'expo-font';
+import { useFonts } from 'expo-font';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
-import {observer, Provider} from 'mobx-react';
+import { observer, Provider } from 'mobx-react';
 import moment from 'moment';
 import 'moment/locale/ru';
-import React, {useEffect} from 'react';
-import {StatusBar, Image, View, ActivityIndicator} from 'react-native';
-import {AppearanceProvider} from 'react-native-appearance';
-import {enLocale, ruLocale} from './src/locales';
-import {API} from './src/models';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, Image, StatusBar, View } from 'react-native';
+import { AppearanceProvider } from 'react-native-appearance';
+import { enLocale, ruLocale } from './src/locales';
+import { API } from './src/models';
 import ApiProvider from './src/providers/ApiProvider';
-import {ThemeProvider} from './src/providers/ThemeProvider';
+import { ThemeProvider } from './src/providers/ThemeProvider';
+import Main from './src/screens/Main';
 import stores from './src/stores/stores';
-import Organizations from './src/views/organization/Organizations';
 
 moment.locale('ru');
 i18n.translations = {
@@ -71,7 +71,7 @@ function App() {
                 <Provider {...stores}>
                     <ThemeProvider theme={app.theme}>
                         <StatusBar barStyle={barStyle} />
-                        <Organizations />
+                        <Main />
                     </ThemeProvider>
                 </Provider>
             </ApiProvider>

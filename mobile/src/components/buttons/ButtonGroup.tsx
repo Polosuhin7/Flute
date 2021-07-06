@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {useState} from 'react';
 import {LayoutChangeEvent, Pressable, View} from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated, {useAnimatedStyle, useSharedValue, withSpring} from 'react-native-reanimated';
 import {useStyles} from '../../hooks/useStyles';
 import {Theme} from '../../types/ITheme';
@@ -13,6 +14,7 @@ const createStyle = (theme: Theme) => ({
         borderRadius: theme.radius.double,
         flexDirection: 'row',
         paddingVertical: theme.spacing.double,
+        cursor: 'pointer'
     },
     button: {
         flex: 1,
@@ -51,9 +53,10 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({selectedIndex, buttons, onChan
 
     const onLayout = (e: LayoutChangeEvent) => {
         const {width, height} = e.nativeEvent.layout;
-        setCursorHeight(height);
-        setCursorWidth(width / buttons.length);
-        setActive(selectedIndex);
+        setCursorHeight(() => height);
+        setCursorWidth(() => width / buttons.length);
+        const offset = selectedIndex * (width / buttons.length)
+        cursorOffset.value = withSpring(offset, {damping: 17});
     };
 
     const setActive = (index: number) => {

@@ -1,17 +1,16 @@
 import * as Location from 'expo-location';
-import {observer} from 'mobx-react';
-import React, {useEffect, useRef, useState} from 'react';
-import {Dimensions, StyleSheet, View, Image} from 'react-native';
-import MapView, {Marker, PROVIDER_GOOGLE, Region} from 'react-native-maps';
+import { observer } from 'mobx-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Dimensions, StyleSheet, View } from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import customStyle from '../../../assets/maps-style.json';
 import IconButton from '../../components/buttons/IconButton';
-import {useStyles} from '../../hooks/useStyles';
-import {useTheme} from '../../providers/ThemeProvider';
+import { useStyles } from '../../hooks/useStyles';
+import { useTheme } from '../../providers/ThemeProvider';
 import stores from '../../stores/stores';
-import {ESheetState} from '../../types/ESheetState';
-import {Theme} from '../../types/ITheme';
-import {ICoordinate, IOrganization} from '../../types/organization/IOrganization';
-import {debounce} from '../../utils/debounce';
+import { Theme } from '../../types/ITheme';
+import { ICoordinate, IOrganization } from '../../types/organization/IOrganization';
+import { debounce } from '../../utils/debounce';
 const {width, height} = Dimensions.get('window');
 const {organization, app} = stores;
 
@@ -43,7 +42,7 @@ const createStyle = (theme: Theme) =>
         },
         currentLocationButton: {
             position: 'absolute',
-            top: 75,
+            top: 50,
             right: 15,
             zIndex: 500,
         },
@@ -106,7 +105,7 @@ interface IOrganizationMapProps {
 }
 let _mapView: MapView | null;
 const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}) => {
-    const {theme, setTheme} = useTheme();
+    const {theme} = useTheme();
     const colorScheme = theme.id;
     const styles = useStyles(createStyle);
     const {activeOrganization, list} = organization;
@@ -142,27 +141,10 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
 
     return (
         <View style={styles.container}>
-            {theme.id === 'dark' ? (
-                <IconButton
-                    size='md'
-                    variant='secondary'
-                    style={styles.menuButton}
-                    icon='sun'
-                    onPress={() => setTheme('light')}
-                />
-            ) : (
-                <IconButton
-                    size='md'
-                    variant='secondary'
-                    style={styles.menuButton}
-                    icon='moon'
-                    onPress={() => setTheme('dark')}
-                />
-            )}
             <IconButton
                 variant='secondary'
                 style={styles.currentLocationButton}
-                icon='compass'
+                icon='location-arrow'
                 onPress={setUserCurrentLocation}
             />
             <MapView
