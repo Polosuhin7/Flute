@@ -88,12 +88,13 @@ const BottomSheet: React.FC<IBottomSheetProps> = ({
         
     );
     return (
-        <Bottom
-            onOpenEnd={() => _onChange(openState)}
-            onCloseEnd={() => _onChange(closeState)}
-            renderContent={renderContent}
-            {...{ref, snapPoints}}
-        />
+            <Bottom
+                enabledBottomClamp
+                onOpenEnd={() => _onChange(openState)}
+                onCloseEnd={() => _onChange(closeState)}
+                renderContent={renderContent}
+                {...{ref, snapPoints}}
+            />
     );
 };
 export default BottomSheet;

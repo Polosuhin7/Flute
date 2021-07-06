@@ -89,12 +89,12 @@ const filtersGroup: IFilterGroup[] = [
     {
         text: 'To go',
         value: 'togo',
-        icon: 'filter',
+        icon: 'hand-spock',
     },
     {
         text: 'Veranda',
         value: 'veranda',
-        icon: 'filter',
+        icon: 'archway',
     },
 ];
 const OrganizationList: React.FC<IOrganizationListProps> = ({onOrganizationSelect}) => {

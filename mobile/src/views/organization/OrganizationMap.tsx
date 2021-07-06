@@ -60,11 +60,15 @@ interface IOrganizationMapProps {
 }
 let map: google.maps.Map;
 const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}) => {
+    const {location: {coords}} = app;
     const {theme, setTheme} = useTheme();
+    const [mapRegion, setMapRegion] = useState({
+        center: {lat: coords.latitude, lng: coords.longitude},
+        zoom: 8
+    })
     const colorScheme = theme.id;
     const styles = useStyles(createStyle);
     const {activeOrganization, list} = organization;
-    const {location: {coords}} = app;
 
     useEffect(() => {
         if (activeOrganization?.coordinate.latitude) {
@@ -90,14 +94,14 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
         map = new google.maps.Map(
             document.getElementById('map') as HTMLElement,
             {
+                ...mapRegion,
                 backgroundColor: theme.color.layout,
-                center: {lat: coords.latitude, lng: coords.longitude},
-                zoom: 8,
                 fullscreenControl: false,
                 mapTypeControl: false,
                 streetViewControl: false,
                 zoomControl: false,
-                panControl: false,
+                panControl: true,
+                gestureHandling: 'greedy',
                 styles: theme.id === 'dark' ? customStyle : [],
             }
         );
@@ -115,6 +119,7 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
             anchor: new google.maps.Point(15, 30),
           };
         list.forEach((_organization) => {
+
             const marker = new google.maps.Marker({
                 position: {
                     lat: _organization.coordinate.latitude,
@@ -123,11 +128,20 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
                 map,
                 icon,
             });
+
             marker.addListener('click', () => {
                 organization.setActiveOrganization(_organization);
                 onOrganizationSelect(_organization);
             });
         });
+
+        map.addListener('bounds_changed', debounce(() => {
+            setMapRegion({
+                center: {lat: map?.getCenter()?.lat() || 0, lng: map?.getCenter()?.lng() || 0},
+                zoom: map?.getZoom() || 8
+            })
+
+        }, 500))
     }
 
     return (

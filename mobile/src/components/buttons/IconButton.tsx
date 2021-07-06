@@ -1,15 +1,13 @@
-import {FontAwesome5} from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
-import {Pressable, StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
+import { Pressable, StyleSheet, ViewStyle } from 'react-native';
 import Animated, {
-    interpolate,
     useAnimatedStyle,
     useSharedValue,
-    withSpring,
-    withTiming,
+    withSpring
 } from 'react-native-reanimated';
-import {useStyles} from '../../hooks/useStyles';
-import {Theme} from '../../types/ITheme';
+import { useStyles } from '../../hooks/useStyles';
+import { Theme } from '../../types/ITheme';
 
 const createContainerStyles = (theme: Theme) =>
     StyleSheet.create({
