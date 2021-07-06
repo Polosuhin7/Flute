@@ -84,7 +84,7 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
 
     useEffect(() => {
         initMap();
-    }, [list]);
+    }, [list, theme.id]);
 
     function initMap() {
         map = new google.maps.Map(
@@ -97,7 +97,7 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
                 mapTypeControl: false,
                 streetViewControl: false,
                 panControl: false,
-                styles: customStyle,
+                styles: theme.id === 'dark' ? customStyle : [],
             }
         );
         
