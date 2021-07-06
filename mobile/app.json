@@ -39,6 +39,7 @@
         }
       }
     },
+    
     "web": {
       "name": "Flue",
       "favicon": "./assets/favicon.png",
