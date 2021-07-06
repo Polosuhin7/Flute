@@ -24,9 +24,13 @@
       * {
         transition: background .5s, color .5s;
       }
-      body {
+      :root {
+        --color-layout: #282829
+      }
+      html, body, #root {
         height: 100vh;
         overflow: hidden;
+        background-color: var(--color-layout);
       }
 
       [class^="r-overflow"] {

@@ -5,6 +5,7 @@ import { LightTheme } from '../themes/LightTheme';
 import { Theme } from '../types/ITheme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DarkTheme } from '../themes/DarkTheme';
+import { Platform } from 'react-native';
 interface ProvidedValue {
   theme: Theme;
   setTheme: (theme: AvailableThemes) => void;
@@ -29,6 +30,9 @@ export const ThemeProvider = React.memo<Props>((props) => {
     setTheme((currentTheme: AvailableThemes) => {
       if (currentTheme === newTheme) {
         return currentTheme;
+      }
+      if(Platform.OS === 'web') {
+        document.documentElement.style.setProperty('--color-layout', Themes[newTheme].color.layout)
       }
       return newTheme;
     });

@@ -2,8 +2,8 @@
   "background_color": "#2E2F30",
   "display": "standalone",
   "lang": "en",
-  "name": "Flue",
-  "short_name": "Flue",
+  "name": "Flute",
+  "short_name": "Flute",
   "start_url": "/web-build/index.html?utm_source=web_app_manifest",
   "orientation": "portrait",
   "related_applications": [

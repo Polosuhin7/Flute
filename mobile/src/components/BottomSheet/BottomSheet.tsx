@@ -1,12 +1,11 @@
 import * as React from 'react';
-import {useEffect, useRef} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import { useEffect, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Bottom from 'reanimated-bottom-sheet';
-import {useStyles} from '../../hooks/useStyles';
-import {ESheetState} from '../../types/ESheetState';
-import {Theme} from '../../types/ITheme';
+import { useStyles } from '../../hooks/useStyles';
+import { ESheetState } from '../../types/ESheetState';
+import { Theme } from '../../types/ITheme';
 
 const createStyle = (theme: Theme) =>
     StyleSheet.create({

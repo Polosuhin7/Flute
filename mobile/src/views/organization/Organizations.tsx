@@ -12,7 +12,7 @@ import OrganizationList from './OrganizationList';
 import OrganizationMap from './OrganizationMap';
 const {height, width} = Dimensions.get('window');
 const isDesktop = width > 1024;
-const listSnapPoints = isDesktop ? [height, height] : [110, 110, height - 200];
+const listSnapPoints = isDesktop ? [height, height] : [120, 120, height - 200];
 const itemSnapPoints = isDesktop ? [-100, 0, height - 100, height - 100] : [-100, 0, 160, height - 100];
 
 const createStyles = (theme: Theme) => StyleSheet.create({
