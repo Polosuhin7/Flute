@@ -45,16 +45,16 @@ const Organizations: React.FC<any> = () => {
     if(isDesktop) {
         return (
             <View style={styles.box}>
+                <View style={styles.list}>
+                <BottomSheet state={listState} snapPoints={listSnapPoints} onChange={setListState}>
+                    <OrganizationList onOrganizationSelect={onOrganizationSelect} />
+                </BottomSheet>
+                </View>
                 <View style={styles.map}>
                     <OrganizationMap onOrganizationSelect={onOrganizationSelect} />
                     <BottomSheet state={itemState} onChange={setItemState} snapPoints={itemSnapPoints}>
                         <OrganizationItem />
                     </BottomSheet>
-                </View>
-                <View style={styles.list}>
-                <BottomSheet state={listState} snapPoints={listSnapPoints} onChange={setListState}>
-                    <OrganizationList onOrganizationSelect={onOrganizationSelect} />
-                </BottomSheet>
                 </View>
             </View>
         );
