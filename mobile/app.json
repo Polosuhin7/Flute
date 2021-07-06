@@ -41,10 +41,9 @@
     },
     
     "web": {
-      "name": "Flue",
+      "name": "Flute",
       "favicon": "./assets/favicon.png",
       "backgroundColor":  "#2E2F30",
-      "publicPath": "./",
       "splash": {
         "image": "./assets/splash.png",
         "resizeMode": "contain",
