@@ -9,7 +9,8 @@
     "build:android": "expo build:android -t apk",
     "build:ios": "expo build:ios -t archive",
     "build:ios:adhoc": "expo build:ios --provisioning-profile-path ./ios/Flute_Ad_Hoc.mobileprovision",
-    "build:web": "expo build:web",
+    "build:web": "expo build:web && yarn after:build:web",
+    "after:build:web": "cd .. && cp -r ./mobile/web-build ./backend/public/",
     "eject": "expo eject"
   },
   "dependencies": {
