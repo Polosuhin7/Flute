@@ -85,6 +85,7 @@ const Organizations: React.FC<any> = () => {
 
     const onOrganizationSelect = useCallback(
         (val: IOrganization) => {
+            console.log('listState', listState)
             setItemState(listState > 1 || listState === 0 ? 3 : 2);
             history.pushState({}, '', `?organization_id=${val.id}`)
         },
