@@ -51,4 +51,6 @@ export interface IOrganization {
     shedule: IOrganizationShedule;
     address: IOrganizationAddress;
     phone: string;
+    veranda: boolean;
+    togo: boolean;
 }

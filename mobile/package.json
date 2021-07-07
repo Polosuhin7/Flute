@@ -1,10 +1,16 @@
 {
   "main": "node_modules/expo/AppEntry.js",
+  "homepage": "./",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "web:ios": "expo start:web --ios",
+    "build:android": "expo build:android -t apk",
+    "build:ios": "expo build:ios -t archive",
+    "build:web": "expo build:web && yarn after:build:web",
+    "after:build:web": "cd .. && cp -r ./mobile/web-build ./backend/public/",
     "eject": "expo eject"
   },
   "dependencies": {
@@ -36,11 +42,14 @@
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
+    "react-native-swipe-gestures": "^1.0.5",
     "react-native-web": "~0.13.12",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@expo/webpack-config": "^0.12.82",
+    "@types/google.maps": "^3.45.4",
     "@types/i18n-js": "^3.8.1",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",

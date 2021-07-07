@@ -809,6 +809,14 @@
           "phone": {
             "type": "string"
           },
+          "veranda": {
+            "type": "boolean",
+            "default": false
+          },
+          "togo": {
+            "type": "boolean",
+            "default": false
+          },
           "localizations": {
             "type": "array",
             "items": {
@@ -860,6 +868,12 @@
                 },
                 "phone": {
                   "type": "string"
+                },
+                "veranda": {
+                  "type": "boolean"
+                },
+                "togo": {
+                  "type": "boolean"
                 },
                 "localizations": {
                   "type": "array",
@@ -1109,6 +1123,14 @@
           },
           "phone": {
             "type": "string"
+          },
+          "veranda": {
+            "type": "boolean",
+            "default": false
+          },
+          "togo": {
+            "type": "boolean",
+            "default": false
           },
           "localizations": {
             "type": "array",

@@ -2,7 +2,8 @@
   "expo": {
     "name": "flute",
     "slug": "flute",
-    "version": "1.0.0",
+    "version": "1.0.7",
+    "scheme": "flute",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "icon": "./assets/icon.png",
@@ -19,9 +20,10 @@
     ],
     "ios": {
       "bundleIdentifier": "com.flute.flute",
-      "supportsTablet": true,
+      "backgroundColor": "#2E2F30",
+      "supportsTablet": false,
       "config": {
-        "googleMapsApiKey": "AIzaSyCCIL6IElRINVk6av4vCNuK4H0k3W"
+        "googleMapsApiKey": "AIzaSyCP6MbKC7zp1xBIt39pB-YMCyhAfFiYHUs"
       }
     },
     "android": {
@@ -30,15 +32,35 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#2E2F30"
       },
+      
       "package": "com.flute.flute",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCCIL6IElRINVk6av4vCNuK4H0k3W"
+          "apiKey": "AIzaSyCCIL6IElRINVk6av4vCNuK4H0k3W-uObY"
         }
       }
     },
+    
     "web": {
-      "favicon": "./assets/favicon.png"
+      "name": "Flute",
+      "favicon": "./assets/favicon.png",
+      "backgroundColor":  "#2E2F30",
+      "splash": {
+        "image": "./assets/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#2E2F30"
+      }
+    }
+  },
+  "builds": {
+    "android": {
+      "release": {
+        "workflow": "managed"
+      },
+      "preview": {
+        "workflow": "managed",
+        "buildType": "apk"
+      }
     }
   }
 }

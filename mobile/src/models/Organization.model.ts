@@ -1,10 +1,12 @@
+import { LocationObject } from 'expo-location';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IOrganization } from "../types/organization/IOrganization";
+import { getGeoDistance } from "../utils/getGeoDistance";
 import { isTodayOpen } from "../utils/orgnizationSheduleHelper";
 import { CrudModel } from "./Crud.model";
 
 export interface IOrganizationModel {
-    getFilteredData(filter?: string): Promise<IOrganization[]>
+    getFilteredData(filter?: string, userLocation?: LocationObject): Promise<IOrganization[]>
     getFavorites(): Promise<IOrganization[]>;
     toggleFavorite(organizaion: IOrganization): Promise<IOrganization[]>;
 }
@@ -14,21 +16,26 @@ export class OrganizationModel extends CrudModel<IOrganization> implements IOrga
         super("/organizations");
     }
     
-    async getFilteredData(filter?: string): Promise<IOrganization[]> {
-        
-        if(!filter) {
-            return await this.getList();
-        }
+    async getFilteredData(filter?: string, userLocation?: LocationObject): Promise<IOrganization[]> {
         if(filter === 'favorite') {
             return await this.getFavorites();
         }
-
+        let organizations = await this.getList();
+        
         if(filter === 'open-now') {
-            const organizations = await this.getList();
-            return organizations.filter(organization => isTodayOpen(organization.shedule));
+            organizations = organizations.filter(organization => isTodayOpen(organization.shedule));
+        }
+        if(filter === 'veranda') {
+            organizations = organizations.filter(organization => organization.veranda);
+        }
+        if(filter === 'togo') {
+            organizations = organizations.filter(organization => organization.togo);
         }
 
-        return await this.getList();;
+        if(userLocation) {
+            return organizations.sort((a: IOrganization, b: IOrganization) =>  +getGeoDistance(userLocation, a.coordinate) - +getGeoDistance(userLocation, b.coordinate));
+        }
+        return organizations
 
     }
     
