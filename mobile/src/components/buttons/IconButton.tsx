@@ -25,6 +25,9 @@ const createContainerStyles = (theme: Theme) =>
         active: {
             backgroundColor: theme.color.active,
         },
+        link: {
+            backgroundColor: 'transparent'
+        }
     });
 
 const createTextStyles = (theme: Theme) =>
@@ -38,6 +41,9 @@ const createTextStyles = (theme: Theme) =>
         active: {
             color: theme.color.active,
         },
+        link: {
+            color: theme.color.text
+        }
     });
 
 const createButtonSizeStyles = (theme: Theme) =>
@@ -81,7 +87,7 @@ const createTextSizeStyles = (theme: Theme) =>
     });
 
 type ButtonSize = 'lg' | 'md' | 'sm' | 'xs';
-type ButtonVariant = 'primary' | 'secondary' | 'active';
+type ButtonVariant = 'primary' | 'secondary' | 'active' | 'link';
 
 export interface ButtonProps {
     onPress(e: any): void;

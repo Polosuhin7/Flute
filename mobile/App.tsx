@@ -14,7 +14,7 @@ import { ThemeProvider } from './src/providers/ThemeProvider';
 import Main from './src/screens/Main';
 import stores from './src/stores/stores';
 
-moment.locale('ru');
+moment.locale(Localization.locale);
 i18n.translations = {
     ru: ruLocale,
     en: enLocale,
@@ -55,7 +55,7 @@ function App() {
         })();
     }, []);
 
-    if (!ready && !loaded) {
+    if (!ready || !loaded) {
         return (
             <View
                 style={{flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 150}}>

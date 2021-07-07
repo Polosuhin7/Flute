@@ -4,6 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import customStyle from '../../../assets/maps-style.json';
+import mapLightStyle from '../../../assets/map-light.json';
+import mapDarkStyle from '../../../assets/map-dark.json';
 import IconButton from '../../components/buttons/IconButton';
 import { useStyles } from '../../hooks/useStyles';
 import { useTheme } from '../../providers/ThemeProvider';
@@ -161,7 +163,7 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
                 zoomControlEnabled
                 provider={PROVIDER_GOOGLE}
                 style={styles.map}
-                customMapStyle={colorScheme === 'dark' ? customStyle : []}>
+                customMapStyle={colorScheme === 'dark' ? mapDarkStyle : mapLightStyle}>
                 {list.map((organization) => {
                     return (
                         <CustomMarker

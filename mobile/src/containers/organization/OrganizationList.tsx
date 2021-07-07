@@ -8,6 +8,7 @@ import Button from '../../components/buttons/Button';
 import Divider from '../../components/divider/Divider';
 import Typography from '../../components/typograpy/Typography';
 import {useStyles} from '../../hooks/useStyles';
+import { useTheme } from '../../providers/ThemeProvider';
 import stores from '../../stores/stores';
 import {ESheetState} from '../../types/ESheetState';
 import {Theme} from '../../types/ITheme';
@@ -31,6 +32,7 @@ const createStyles = (theme: Theme) =>
             flexDirection: 'row',
             maxHeight: 60,
             paddingBottom: theme.spacing.double,
+            marginHorizontal: -theme.spacing.double,
             zIndex: 1000500,
         },
         filterItem: {
@@ -99,6 +101,7 @@ const filtersGroup: IFilterGroup[] = [
 ];
 const OrganizationList: React.FC<IOrganizationListProps> = ({onOrganizationSelect}) => {
     const styles = useStyles(createStyles);
+    const {theme} = useTheme();
     const {list, fetchData, loading, filter, toogleFileter} = organization;
     const {location} = app;
     return (
@@ -109,11 +112,11 @@ const OrganizationList: React.FC<IOrganizationListProps> = ({onOrganizationSelec
                 </Typography>
                 <View style={styles.filterGroup}>
                     <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-                        {filtersGroup.map(({value, text, icon}) => {
+                        {filtersGroup.map(({value, text, icon}, index) => {
                             return (
                                 <Button
                                     key={value}
-                                    style={styles.filterItem}
+                                    style={[styles.filterItem, {marginLeft: !index ? theme.spacing.double : 0 }]}
                                     size='sm'
                                     variant={
                                         filter === value ? 'outlined-active' : 'outlined-secondary'

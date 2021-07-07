@@ -11,7 +11,9 @@ import {useStyles} from '../hooks/useStyles';
 import {Theme} from '../types/ITheme';
 import Menu from '../containers/menu/Menu';
 import Animated, {useAnimatedStyle, useSharedValue, withSpring} from 'react-native-reanimated';
-
+import * as Linking from 'expo-linking';
+import stores from '../stores/stores';
+const {organization} = stores;
 const createStyle = (theme: Theme) =>
     StyleSheet.create({
         menuButton: {
@@ -62,6 +64,19 @@ const Main: React.FC<any> = () => {
     useEffect(() => {
         opacityValue.value = menuState > 2 ? 0.5 : 0;
     }, [menuState]);
+
+    useEffect(() => {
+        Linking.addEventListener('url', ({url}) => {
+            const {queryParams, path} = Linking.parse(url);
+            if (path?.includes('organization')) {
+                const targetOragnization = organization.list.find(({id}) => id == queryParams.id);
+                if (targetOragnization) {
+                    organization.setActiveOrganization(targetOragnization);
+                    onOrganizationSelect(targetOragnization);
+                }
+            }
+        });
+    }, []);
 
     return (
         <>

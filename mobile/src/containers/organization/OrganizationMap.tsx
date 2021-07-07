@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import customStyle from '../../../assets/maps-style.json';
+import mapLightStyle from '../../../assets/map-light.json';
+import mapDarkStyle from '../../../assets/map-dark.json';
 import IconButton from '../../components/buttons/IconButton';
 import { useStyles } from '../../hooks/useStyles';
 import { useTheme } from '../../providers/ThemeProvider';
@@ -53,10 +54,6 @@ let map: google.maps.Map;
 const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}) => {
     const {location: {coords}} = app;
     const {theme} = useTheme();
-    const [mapRegion, setMapRegion] = useState({
-        center: {lat: coords.latitude, lng: coords.longitude},
-        zoom: 8
-    })
     const styles = useStyles(createStyle);
     const {activeOrganization, list} = organization;
 
@@ -68,12 +65,12 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
 
     const moveTo = ({longitude, latitude}: ICoordinate) => {
         if (map) {
-            map.moveCamera({center: {lat: latitude, lng: longitude}});
+            map.panTo({lat: latitude, lng: longitude});
         }
     };
 
-    const setUserCurrentLocation =  () => {
-        initMap();
+    const setUserCurrentLocation = () => {
+        moveTo(coords);
     };
 
     useEffect(() => {
@@ -84,7 +81,8 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
         map = new google.maps.Map(
             document.getElementById('map') as HTMLElement,
             {
-                ...mapRegion,
+                center: {lat: coords.latitude, lng: coords.longitude},
+                zoom: 12,
                 backgroundColor: theme.color.layout,
                 fullscreenControl: false,
                 mapTypeControl: false,
@@ -92,10 +90,9 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
                 zoomControl: false,
                 panControl: true,
                 gestureHandling: 'greedy',
-                styles: theme.id === 'dark' ? customStyle : [],
+                styles: theme.id === 'dark' ? mapDarkStyle : mapLightStyle,
             }
         );
-        
         const icon = {
             path: " M25, 50a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0",
             fillColor: theme.color.secondary,
@@ -108,7 +105,7 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
             translateY: '-50%',
             anchor: new google.maps.Point(15, 30),
           };
-        list.forEach((_organization) => {
+        list.forEach((_organization, index) => {
 
             const marker = new google.maps.Marker({
                 position: {
@@ -124,14 +121,6 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
                 onOrganizationSelect(_organization);
             });
         });
-
-        map.addListener('bounds_changed', debounce(() => {
-            setMapRegion({
-                center: {lat: map?.getCenter()?.lat() || 0, lng: map?.getCenter()?.lng() || 0},
-                zoom: map?.getZoom() || 8
-            })
-
-        }, 500))
     }
 
     return (

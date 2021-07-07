@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import {ScrollView, ScrollViewProps} from 'react-native';
 
 
-const BottomSheetScrollView: React.FC<ScrollViewProps> = forwardRef(({children, ...props}, ref: any) => {
+const BottomSheetScrollView: React.FC<ScrollViewProps | any> = forwardRef(({children, ...props}, ref: any) => {
     return (
         <ScrollView {...props} ref={ref}>{children}</ScrollView>
     )

@@ -13,6 +13,10 @@ import OrganizationMap from '../containers/organization/OrganizationMap';
 import Animated, {useSharedValue, useAnimatedStyle, withSpring} from 'react-native-reanimated';
 import IconButton from '../components/buttons/IconButton';
 import Menu from '../containers/menu/Menu';
+import * as Linking from 'expo-linking';
+import stores from '../stores/stores';
+
+const {organization} = stores;
 const {height, width} = Dimensions.get('window');
 const isDesktop = width > 1024;
 const listSnapPoints = isDesktop ? [height, height] : [120, 120, height - 200];
@@ -82,9 +86,24 @@ const Organizations: React.FC<any> = () => {
     const onOrganizationSelect = useCallback(
         (val: IOrganization) => {
             setItemState(listState > 1 || listState === 0 ? 3 : 2);
+            history.pushState({}, '', `?organization_id=${val.id}`)
         },
         [listState]
     );
+
+    useEffect(() => {
+        Linking.addEventListener('url', ({url}) => {
+            const {queryParams, path} = Linking.parse(url);
+            if(queryParams.organization_id) {
+                const targetOragnization = organization.list.find(({id}) => id == queryParams.organization_id)
+                if(targetOragnization) {
+                    organization.setActiveOrganization(targetOragnization);
+                    onOrganizationSelect(targetOragnization);
+                }
+            }
+        });
+    }, []);
+
     if (isDesktop) {
         return (
             <View style={styles.box}>

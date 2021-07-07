@@ -9,7 +9,6 @@
     "web:ios": "expo start:web --ios",
     "build:android": "expo build:android -t apk",
     "build:ios": "expo build:ios -t archive",
-    "build:ios:adhoc": "expo build:ios --provisioning-profile-path ./ios/Flute_Ad_Hoc.mobileprovision",
     "build:web": "expo build:web && yarn after:build:web",
     "after:build:web": "cd .. && cp -r ./mobile/web-build ./backend/public/",
     "eject": "expo eject"
@@ -27,6 +26,7 @@
     "expo-localization": "~10.1.0",
     "expo-location": "~12.0.4",
     "expo-permissions": "~12.0.1",
+    "expo-sharing": "~9.1.2",
     "expo-status-bar": "~1.0.4",
     "geolib": "^3.3.1",
     "i18n-js": "^3.8.0",

@@ -2,7 +2,7 @@ import * as Linking from 'expo-linking';
 import I18n from 'i18n-js';
 import {observer} from 'mobx-react';
 import React, {useEffect, useRef} from 'react';
-import {Image, Platform, StyleSheet, View} from 'react-native';
+import {Image, Platform, PlatformColor, Share, StyleSheet, View} from 'react-native';
 import BottomSheetScrollView from '../../components/BottomSheet/BottomSheetScrollView';
 import Button from '../../components/buttons/Button';
 import IconButton from '../../components/buttons/IconButton';
@@ -15,13 +15,19 @@ import {Theme} from '../../types/ITheme';
 import {IOrganizationShedule} from '../../types/organization/IOrganization';
 import {getGeoDistance} from '../../utils/getGeoDistance';
 import {isToday, textToOrganizationClosed} from '../../utils/orgnizationSheduleHelper';
+import * as Sharing from 'expo-sharing';
+import config from '../../config';
 
 const {organization, app, navigation} = stores;
 
 const createStyle = (theme: Theme) =>
     StyleSheet.create({
         container: {
-            paddingHorizontal: theme.spacing.double
+            paddingHorizontal: theme.spacing.double,
+        },
+        titleBox: {
+            alignItems: 'center',
+            flexDirection: 'row',
         },
         title: {
             color: theme.color.text,
@@ -56,7 +62,7 @@ const createStyle = (theme: Theme) =>
         buttonLike: {
             marginLeft: theme.spacing.base,
         },
-        buttonShare: {
+        buttonPhone: {
             marginLeft: theme.spacing.base,
         },
         descriptionBox: {
@@ -111,7 +117,12 @@ const Shedule: React.FC<SheduleProps> = ({shedule}) => {
         <View>
             {Object.entries(weekDays).map(([day, {time_from = '', time_to = ''}]) => {
                 return (
-                    <Typography style={[styles.workHours, {color: isToday(day) ? theme.color.active : theme.color.text}]} key={`index-${day}`}>
+                    <Typography
+                        style={[
+                            styles.workHours,
+                            {color: isToday(day) ? theme.color.active : theme.color.text},
+                        ]}
+                        key={`index-${day}`}>
                         {I18n.t(day)}: {time_from.split(':').slice(0, 2).join(':')} -{' '}
                         {time_to.split(':').slice(0, 2).join(':')}
                     </Typography>
@@ -139,11 +150,13 @@ const OrganizationItem: React.FC<any> = () => {
     };
 
     const onDirection = () => {
-  
         const {latitude: lt, longitude: lg} = activeOrganization.coordinate!;
         const {latitude, longitude} = app.location.coords;
-        if(Platform.OS === 'web') {
-            return window.open(`https://www.google.com/maps/dir/?api=1&origin=${latitude}, ${longitude}&destination=${lt}, ${lg}`, '_blank')
+        if (Platform.OS === 'web') {
+            return window.open(
+                `https://www.google.com/maps/dir/?api=1&origin=${latitude}, ${longitude}&destination=${lt}, ${lg}`,
+                '_blank'
+            );
         }
         //open  ya maps
         // Linking.openURL(`yandexmaps://maps.yandex.com/?rtt=auto&rtext=${lt}, ${lg}~${latitude}, ${longitude}, &z=12`);
@@ -152,16 +165,29 @@ const OrganizationItem: React.FC<any> = () => {
         const url = scheme + `saddr=${lt}, ${lg}&daddr=${latitude}, ${longitude}, &z=12`;
         Linking.openURL(url);
     };
-    return (
+    const onShare = () => {
+        let url = `${config.baseUrl}/index.html?organization_id=${activeOrganization.id}`
+        if(Platform.OS === 'web') {
+            navigator?.share({title: activeOrganization.title, url})
+            return;
+        } 
+        Share.share({url, message: url, title: url});
+    };
 
+    return (
         <BottomSheetScrollView
             style={styles.container}
             ref={ScrollViewRef}
             snapToInterval={50}
             showsHorizontalScrollIndicator={false}>
-            <Typography style={styles.title} variant='h3'>
-                {activeOrganization?.title}
-            </Typography>
+            <View style={styles.titleBox}>
+                <Typography style={styles.title} variant='h3'>
+                    {activeOrganization?.title}
+                </Typography>
+                {(Platform.OS !== 'web' || navigator?.share) && (
+                    <IconButton size='sm' variant='link' icon='share-alt' onPress={onShare} />
+                )}
+            </View>
             <View style={styles.subtitleBox}>
                 <Typography style={styles.destinatioText}>
                     {getGeoDistance(location, activeOrganization.coordinate)} км
@@ -182,10 +208,12 @@ const OrganizationItem: React.FC<any> = () => {
                     icon={isLiked ? 'heartbeat' : 'heart'}
                     onPress={toggleLike}
                 />
-                <IconButton style={styles.buttonShare} icon='phone' onPress={callPhone} />
+                <IconButton style={styles.buttonPhone} icon='phone' onPress={callPhone} />
             </View>
             <Divider />
-            <Typography numberOfLines={4} style={styles.secondaryText}>{activeOrganization.description}</Typography>
+            <Typography numberOfLines={4} style={styles.secondaryText}>
+                {activeOrganization.description}
+            </Typography>
             {activeOrganization.images.length ? (
                 <>
                     <View style={styles.imageBox}>
@@ -257,4 +285,3 @@ const OrganizationItem: React.FC<any> = () => {
 };
 
 export default observer(OrganizationItem);
-
