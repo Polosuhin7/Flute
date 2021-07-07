@@ -15,6 +15,7 @@ import IconButton from '../components/buttons/IconButton';
 import Menu from '../containers/menu/Menu';
 import * as Linking from 'expo-linking';
 import stores from '../stores/stores';
+import { debounce } from '../utils/debounce';
 
 const {organization} = stores;
 const {height, width} = Dimensions.get('window');
@@ -83,11 +84,12 @@ const Organizations: React.FC<any> = () => {
 
     const onOrganizationSelect = (val: IOrganization, type: 'map' | 'list' = 'list') => {
         setItemState(type === 'list' ? 3 : 2);
-        history.pushState({}, '', `?organization_id=${val.id}`)
+        // history.pushState({}, '', `?organization_id=${val.id}`)
     };
 
     useEffect(() => {
-        Linking.addEventListener('url', ({url}) => {
+        // TODO: Костыль! Сделать что то получше
+        Linking.addEventListener('url', debounce(({url}: any) => {
             const {queryParams, path} = Linking.parse(url);
             if(queryParams.organization_id) {
                 const targetOragnization = organization.list.find(({id}) => id == queryParams.organization_id)
@@ -98,7 +100,7 @@ const Organizations: React.FC<any> = () => {
                     }, 1000)
                 }
             }
-        });
+        }, 500));
     }, []);
 
     if (isDesktop) {
