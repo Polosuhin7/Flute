@@ -67,7 +67,7 @@ const createStyles = (theme: Theme) =>
             color: theme.color.secondary,
         },
     });
-const {organization, navigation, app} = stores;
+const {organization, app} = stores;
 interface IOrganizationListProps {
     onOrganizationSelect(val: IOrganization): void;
 }
@@ -116,7 +116,7 @@ const OrganizationList: React.FC<IOrganizationListProps> = ({onOrganizationSelec
                             return (
                                 <Button
                                     key={value}
-                                    style={[styles.filterItem, {marginLeft: !index ? theme.spacing.double : 0 }]}
+                                    style={[styles.filterItem, {marginLeft: !index ? theme.spacing.double : 0 }] as any}
                                     size='sm'
                                     variant={
                                         filter === value ? 'outlined-active' : 'outlined-secondary'
@@ -143,7 +143,6 @@ const OrganizationList: React.FC<IOrganizationListProps> = ({onOrganizationSelec
                         onPress={() => {
                             organization.setActiveOrganization(item);
                             onOrganizationSelect(item);
-                            navigation.navigate('organizationItem', ESheetState.HALF);
                         }}>
                         <View style={styles.item} key={item.id + item.title}>
                             <View style={styles.titleContainer}>

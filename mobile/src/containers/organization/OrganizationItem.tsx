@@ -1,24 +1,23 @@
 import * as Linking from 'expo-linking';
 import I18n from 'i18n-js';
-import {observer} from 'mobx-react';
-import React, {useEffect, useRef} from 'react';
-import {Image, Platform, PlatformColor, Share, StyleSheet, View} from 'react-native';
+import { observer } from 'mobx-react';
+import React, { useEffect, useRef } from 'react';
+import { Image, Platform, Share, StyleSheet, View } from 'react-native';
 import BottomSheetScrollView from '../../components/BottomSheet/BottomSheetScrollView';
 import Button from '../../components/buttons/Button';
 import IconButton from '../../components/buttons/IconButton';
 import Divider from '../../components/divider/Divider';
 import Typography from '../../components/typograpy/Typography';
-import {useStyles} from '../../hooks/useStyles';
-import {useTheme} from '../../providers/ThemeProvider';
-import stores from '../../stores/stores';
-import {Theme} from '../../types/ITheme';
-import {IOrganizationShedule} from '../../types/organization/IOrganization';
-import {getGeoDistance} from '../../utils/getGeoDistance';
-import {isToday, textToOrganizationClosed} from '../../utils/orgnizationSheduleHelper';
-import * as Sharing from 'expo-sharing';
 import config from '../../config';
+import { useStyles } from '../../hooks/useStyles';
+import { useTheme } from '../../providers/ThemeProvider';
+import stores from '../../stores/stores';
+import { Theme } from '../../types/ITheme';
+import { IOrganizationShedule } from '../../types/organization/IOrganization';
+import { getGeoDistance } from '../../utils/getGeoDistance';
+import { isToday, textToOrganizationClosed } from '../../utils/orgnizationSheduleHelper';
 
-const {organization, app, navigation} = stores;
+const {organization, app} = stores;
 
 const createStyle = (theme: Theme) =>
     StyleSheet.create({
