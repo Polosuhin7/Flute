@@ -94,10 +94,10 @@ const Organizations: React.FC<any> = () => {
     useEffect(() => {
         Linking.addEventListener('url', ({url}) => {
             const {queryParams, path} = Linking.parse(url);
-            console.log('queryParams', queryParams);
-            console.log('path', path);
             if(queryParams.organization_id) {
                 const targetOragnization = organization.list.find(({id}) => id == queryParams.organization_id)
+                console.log('targetOragnization', targetOragnization);
+                console.log('organization.list', organization.list);
                 if(targetOragnization) {
                     organization.setActiveOrganization(targetOragnization);
                     onOrganizationSelect(targetOragnization);
