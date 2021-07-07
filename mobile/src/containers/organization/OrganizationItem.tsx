@@ -166,7 +166,8 @@ const OrganizationItem: React.FC<any> = () => {
         Linking.openURL(url);
     };
     const onShare = () => {
-        let url = `${config.baseUrl}/index.html?organization_id=${activeOrganization.id}`
+        // TODO: Подумать как нормально сделать
+        let url = `${config.baseUrl}/web-build/index.html?organization_id=${activeOrganization.id}`
         if(Platform.OS === 'web') {
             navigator?.share({title: activeOrganization.title, url})
             return;
