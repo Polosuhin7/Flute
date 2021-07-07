@@ -39,7 +39,7 @@ function App() {
             try {
                 await organization.fetchData();
             } catch (error) {
-                console.log('failed fetch');
+                console.log('failed to load data')
             }
             try {
                 let {status} = await Location.requestForegroundPermissionsAsync();
@@ -56,7 +56,7 @@ function App() {
         })();
     }, []);
 
-    if (!ready || !loaded) {
+    if (!(ready && loaded)) {
         return <AppLoading />;
     }
     const barStyle = app.theme === 'dark' ? 'light-content' : 'dark-content';

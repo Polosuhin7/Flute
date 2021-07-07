@@ -42,7 +42,7 @@ function App() {
             try {
                 await organization.fetchData();
             } catch (error) {
-                console.log('failed fetch');
+                organization.fetchData();
             }
             try {
                 const position: any = await getCurrentLocation();
@@ -55,7 +55,7 @@ function App() {
         })();
     }, []);
 
-    if (!ready || !loaded) {
+    if (!(ready && loaded)) {
         return (
             <View
                 style={{flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 150}}>
