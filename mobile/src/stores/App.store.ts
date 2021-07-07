@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AvailableThemes } from './../themes/index';
-import {computed, makeAutoObservable} from "mobx";
+import {action, computed, makeAutoObservable} from "mobx";
 import {IRootStore} from "./Root.store";
 import { IError } from "../types/IError";
 import { LocationObject } from "expo-location";
@@ -12,6 +12,7 @@ export interface IAppStore {
     error: IError | null;
     location: LocationObject;
     theme: AvailableThemes;
+    setTheme(theme: AvailableThemes): void;
     setLocation(location: LocationObject): void;
     setReady(val: boolean): void;
     setError(error: IError | null): void;
@@ -43,6 +44,11 @@ class AppStore implements IAppStore {
     @computed
     get theme() {
         return this._theme;
+    }
+
+    @action
+    setTheme = (theme: AvailableThemes) => {
+        this._theme = theme;
     }
     private setAppTheme = async () => {
         const userTheme = await AsyncStorage.getItem('app-theme');
