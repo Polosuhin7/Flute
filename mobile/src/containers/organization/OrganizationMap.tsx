@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import mapLightStyle from '../../../assets/map-light.json';
 import mapDarkStyle from '../../../assets/map-dark.json';
@@ -48,9 +48,24 @@ const createStyle = (theme: Theme) =>
     });
 
 interface IOrganizationMapProps {
-    onOrganizationSelect(val: IOrganization): void;
+    onOrganizationSelect(val: IOrganization, type: 'map' | 'list'): void;
 }
+
+interface MarkerOptions extends google.maps.MarkerOptions{
+    organizationId: number;
+}
+
+class Marker extends google.maps.Marker {
+    public organizationId: number
+    constructor({organizationId, ...rest}: MarkerOptions) {
+        super(rest);
+        this.organizationId = organizationId;
+    }
+}
+
 let map: google.maps.Map;
+const markers: Marker[] = [];
+
 const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}) => {
     const {location: {coords}} = app;
     const {theme} = useTheme();
@@ -61,9 +76,31 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
         zoom: 12
     })
 
+    const icon = useMemo(() => ({
+        path: " M25, 50a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0",
+        fillColor: theme.color.secondary,
+        fillOpacity: 1,
+        strokeColor: theme.color.primary,
+        strokeWeight: 2,
+        rotation: 0,
+        scale: 0.25,
+        translateX: '-50%',
+        translateY: '-50%',
+        anchor: new google.maps.Point(15, 30),
+      }), [theme.id]);
+
+      const activeIcon = useMemo(() => ({
+        ...icon,
+        fillColor: theme.color.active,
+      }), [theme.id]);
+      
+
     useEffect(() => {
         if (activeOrganization?.coordinate.latitude) {
             moveTo(activeOrganization.coordinate);
+            clearMarkersSelect();
+            const marker = markers.find(({organizationId}) => organizationId === activeOrganization.id);
+            marker && marker.setIcon(activeIcon);
         }
     }, [activeOrganization?.id]);
 
@@ -81,6 +118,10 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
         initMap();
     }, [list, theme.id]);
 
+    function clearMarkersSelect() {
+        markers.forEach((item) => item.setIcon(icon));
+    }
+
     function initMap() {
         map = new google.maps.Map(
             document.getElementById('map') as HTMLElement,
@@ -96,32 +137,24 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
                 styles: theme.id === 'dark' ? mapDarkStyle : mapLightStyle,
             }
         );
-        const icon = {
-            path: " M25, 50a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0",
-            fillColor: theme.color.secondary,
-            fillOpacity: 1,
-            strokeColor: theme.color.primary,
-            strokeWeight: 2,
-            rotation: 0,
-            scale: 0.25,
-            translateX: '-50%',
-            translateY: '-50%',
-            anchor: new google.maps.Point(15, 30),
-          };
+      
         list.forEach((_organization, index) => {
-
-            const marker = new google.maps.Marker({
+            const marker = new Marker({
                 position: {
                     lat: _organization.coordinate.latitude,
                     lng: _organization.coordinate.longitude,
                 },
                 map,
                 icon,
+                organizationId: _organization.id
             });
+            markers.push(marker)
 
             marker.addListener('click', () => {
+                clearMarkersSelect();
+                marker.setIcon(activeIcon);
                 organization.setActiveOrganization(_organization);
-                onOrganizationSelect(_organization);
+                onOrganizationSelect(_organization, 'map');
             });
             map.addListener('bounds_changed', debounce(() => {
                 setMapRegion({

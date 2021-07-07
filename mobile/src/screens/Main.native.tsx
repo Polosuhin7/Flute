@@ -48,8 +48,8 @@ const Main: React.FC<any> = () => {
         opacity: withSpring(opacityValue.value),
     }));
 
-    const onOrganizationSelect =  (val: IOrganization) => {
-        setItemState(listState > 1 ? 3 : 2);
+    const onOrganizationSelect =  (val: IOrganization, type: 'map' | 'list' = 'list') => {
+        setItemState(type === 'list' ? 3 : 2);
     };
 
     const openMenu = () => {

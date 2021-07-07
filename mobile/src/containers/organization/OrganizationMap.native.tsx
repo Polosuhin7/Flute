@@ -57,7 +57,7 @@ const createStyle = (theme: Theme) =>
     });
 
 interface ICustomMarkerProps {
-    onOrganizationSelect: (val: IOrganization) => void;
+    onOrganizationSelect: (val: IOrganization, type: 'map' | 'list') => void;
     organization: IOrganization;
 }
 const CustomMarker: React.FC<ICustomMarkerProps> = observer(
@@ -73,7 +73,7 @@ const CustomMarker: React.FC<ICustomMarkerProps> = observer(
                 ref={MarkerRef}
                 onPress={() => {
                     organization.setActiveOrganization(_organization);
-                    onOrganizationSelect(_organization);
+                    onOrganizationSelect(_organization, 'map');
                 }}
                 tracksViewChanges={false}
                 key={_organization.title + _organization.id}

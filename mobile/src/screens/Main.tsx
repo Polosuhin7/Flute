@@ -19,11 +19,9 @@ import stores from '../stores/stores';
 const {organization} = stores;
 const {height, width} = Dimensions.get('window');
 const isDesktop = width > 1024;
-const listSnapPoints = isDesktop ? [height, height] : [120, 120, height - 200];
+const listSnapPoints = isDesktop ? [height, height, height] : [120, 120, height - 200];
 const menuSnapPoints = [-100, 0, 400, 400];
-const itemSnapPoints = isDesktop
-    ? [-100, 0, height - 100, height - 100]
-    : [-100, 0, 160, height - 100];
+const itemSnapPoints = [-100, 0, 180, height - 100];
 
 const createStyles = (theme: Theme) =>
     StyleSheet.create({
@@ -60,7 +58,7 @@ const createStyles = (theme: Theme) =>
 
 const Organizations: React.FC<any> = () => {
     const styles = useStyles(createStyles);
-    const [listState, setListState] = useState(0);
+    const [listState, setListState] = useState(isDesktop ? 3 : 0);
     const [itemState, setItemState] = useState(0);
     const [menuState, setMenuState] = useState(0);
 
@@ -83,13 +81,10 @@ const Organizations: React.FC<any> = () => {
         opacityValue.value = menuState > 0 ? 0.5 : 0;
     }, [menuState]);
 
-    const onOrganizationSelect = useCallback(
-        (val: IOrganization) => {
-            setItemState(listState >= 0 ? 3 : 2);
-            history.pushState({}, '', `?organization_id=${val.id}`)
-        },
-        [listState, itemState]
-    );
+    const onOrganizationSelect = (val: IOrganization, type: 'map' | 'list' = 'list') => {
+        setItemState(type === 'list' ? 3 : 2);
+        history.pushState({}, '', `?organization_id=${val.id}`)
+    };
 
     useEffect(() => {
         Linking.addEventListener('url', ({url}) => {
