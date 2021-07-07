@@ -48,12 +48,9 @@ const Main: React.FC<any> = () => {
         opacity: withSpring(opacityValue.value),
     }));
 
-    const onOrganizationSelect = useCallback(
-        (val: IOrganization) => {
-            setItemState(listState > 1 ? 3 : 2);
-        },
-        [listState]
-    );
+    const onOrganizationSelect =  (val: IOrganization) => {
+        setItemState(listState > 1 ? 3 : 2);
+    };
 
     const openMenu = () => {
         setListState(0);

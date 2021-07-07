@@ -56,6 +56,10 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
     const {theme} = useTheme();
     const styles = useStyles(createStyle);
     const {activeOrganization, list} = organization;
+    const [mapRegion, setMapRegion] = useState({
+        center: {lat: coords.latitude, lng: coords.longitude},
+        zoom: 12
+    })
 
     useEffect(() => {
         if (activeOrganization?.coordinate.latitude) {
@@ -81,8 +85,7 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
         map = new google.maps.Map(
             document.getElementById('map') as HTMLElement,
             {
-                center: {lat: coords.latitude, lng: coords.longitude},
-                zoom: 12,
+                ...mapRegion,
                 backgroundColor: theme.color.layout,
                 fullscreenControl: false,
                 mapTypeControl: false,
@@ -120,6 +123,13 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
                 organization.setActiveOrganization(_organization);
                 onOrganizationSelect(_organization);
             });
+            map.addListener('bounds_changed', debounce(() => {
+                setMapRegion({
+                    center: {lat: map?.getCenter()?.lat() || 0, lng: map?.getCenter()?.lng() || 0},
+                    zoom: map?.getZoom() || 8
+                })
+    
+            }, 500))
         });
     }
 

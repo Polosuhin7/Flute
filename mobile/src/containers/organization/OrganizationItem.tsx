@@ -171,7 +171,14 @@ const OrganizationItem: React.FC<any> = () => {
             navigator?.share({title: activeOrganization.title, url})
             return;
         } 
-        Share.share({url, message: activeOrganization.title, title: url});
+        if(Platform.OS === 'ios') {
+            return Share.share({url, message: ''});
+        }
+
+        if(Platform.OS === 'android') {
+            return Share.share({title: url, message: url});
+        }
+
     };
 
     return (
