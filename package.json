@@ -4,6 +4,10 @@
     "devDependencies": {
         "lerna": "^4.0.0"
     },
+    "engines": {
+        "node": ">=10.16.0 <=14.x.x",
+        "yarn": "1.*"
+      },
     "scripts": {
         "bootstrap": "lerna bootstrap",
         "heroku-prebuild": "bootstrap",
