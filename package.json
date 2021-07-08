@@ -1,0 +1,14 @@
+{
+    "name": "flute",
+    "private": true,
+    "devDependencies": {
+        "lerna": "^4.0.0"
+    },
+    "scripts": {
+        "bootstrap": "lerna bootstrap",
+        "heroku-prebuild": "bootstrap",
+        "heroku-postbuild": "yarn build:web",
+        "start": "lerna exec 'yarn start' --scope backend",
+        "build:web": "lerna exec 'yarn build:web' --scope mobile"
+    }
+}

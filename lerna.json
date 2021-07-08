@@ -1,0 +1,6 @@
+{
+    "packages": ["backend", "mobile"],
+    "npmClient": "yarn",
+    "useWorkspaces": false,
+    "version": "1.0.1"
+}

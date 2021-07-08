@@ -1,2 +1,2 @@
-web: cd mobile && yarn && yarn build:web
-server: cd backend && npm i && npm start
+web: yarn start
+worker: yarn start

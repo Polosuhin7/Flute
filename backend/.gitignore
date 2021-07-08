@@ -94,7 +94,7 @@ logs
 results
 node_modules
 .node_histor
-yarn.lock
+package-lock.json
 
 ############################
 # Tests
