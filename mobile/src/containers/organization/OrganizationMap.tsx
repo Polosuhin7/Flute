@@ -141,8 +141,8 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
         list.forEach((_organization, index) => {
             const marker = new Marker({
                 position: {
-                    lat: _organization.coordinate.latitude,
-                    lng: _organization.coordinate.longitude,
+                    lat: _organization?.coordinate?.latitude,
+                    lng: _organization?.coordinate?.longitude,
                 },
                 map,
                 icon,

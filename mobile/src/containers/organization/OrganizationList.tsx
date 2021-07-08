@@ -15,7 +15,7 @@ import {Theme} from '../../types/ITheme';
 import {IOrganization} from '../../types/organization/IOrganization';
 import {OrganizationFilterType} from '../../types/organization/OrganizationFilterType';
 import {getGeoDistance} from '../../utils/getGeoDistance';
-import {textToOrganizationClosed} from '../../utils/orgnizationSheduleHelper';
+import {textToOrganizationClosed} from '../../utils/sheduleHelper';
 
 const createStyles = (theme: Theme) =>
     StyleSheet.create({

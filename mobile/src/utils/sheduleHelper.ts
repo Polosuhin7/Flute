@@ -12,10 +12,16 @@ export const isToday = (day: typeof sheduleDays[number]) => {
 }
 export const textToOrganizationClosed = (_shedule: IOrganizationShedule) => {
     const {id, ...shedule} = _shedule || {};
+    if(!Object.keys(shedule).length) {
+        return I18n.t('Unknown');
+    }
     const currentDate = new Date();
-    const currentDay = currentDate.getDay();
-    // console.log('days', shedule[sheduleDays[currentDay] as keyof Omit<IOrganizationShedule, 'id'>])
-    const {time_from = '', time_to= ''} = shedule[sheduleDays[currentDay] as keyof Omit<IOrganizationShedule, 'id'>] || {};
+    const currentDay = shedule?.[sheduleDays?.[currentDate.getDay()] as keyof Omit<IOrganizationShedule, 'id'>];
+
+    if(!currentDay) {
+        return I18n.t('Unknown');
+    }
+    const {time_from = '', time_to= ''} = currentDay;
     const [openedHours, openedMinutes] = time_from.split(':');
     const [closedHours, closedMinutes] = time_to.split(':');
 
@@ -44,10 +50,14 @@ export const textToOrganizationClosed = (_shedule: IOrganizationShedule) => {
 
 
 export const isTodayOpen = (_shedule: IOrganizationShedule) => {
-    const {id, ...shedule} = _shedule;
+    const {id, ...shedule} = _shedule || {};
+    if(!Object.keys(shedule).length) {
+        return false
+    }
     const currentDate = new Date();
-    const currentDay = currentDate.getDay();
-    const {time_from = '', time_to= ''} = shedule[sheduleDays[currentDay] as keyof Omit<IOrganizationShedule, 'id'>];
+    const currentDay = shedule[sheduleDays[currentDate.getDay()] as keyof Omit<IOrganizationShedule, 'id'>];
+
+    const {time_from = '', time_to= ''} = currentDay || {};
     const [openedHours, openedMinutes] = time_from.split(':');
     const [closedHours, closedMinutes] = time_to.split(':');
     if(!(openedHours && openedMinutes && closedHours && closedMinutes)) {

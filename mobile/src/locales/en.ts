@@ -32,5 +32,6 @@ export const enLocale: LocalKeys = {
     "Menu": 'Menu',
     "Report bug": 'Report bug',
     "About project": 'About project',
-    'Connect us': 'Connect us'
+    'Connect us': 'Connect us',
+    'Unknown': 'Unknown'
 }

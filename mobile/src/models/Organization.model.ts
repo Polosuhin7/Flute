@@ -2,7 +2,7 @@ import { LocationObject } from 'expo-location';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IOrganization } from "../types/organization/IOrganization";
 import { getGeoDistance } from "../utils/getGeoDistance";
-import { isTodayOpen } from "../utils/orgnizationSheduleHelper";
+import { isTodayOpen } from "../utils/sheduleHelper";
 import { CrudModel } from "./Crud.model";
 
 export interface IOrganizationModel {

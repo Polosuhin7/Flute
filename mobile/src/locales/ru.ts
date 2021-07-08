@@ -32,7 +32,8 @@ export const ruLocale = {
     "Menu": 'Меню',
     "Report bug": 'Сообщить о проблеме',
     "About project": 'О проекте',
-    'Connect us': 'Связаться с нами'
+    'Connect us': 'Связаться с нами',
+    'Unknown': 'Неизвестно'
 };
 
 export type LocalKeys = typeof ruLocale;

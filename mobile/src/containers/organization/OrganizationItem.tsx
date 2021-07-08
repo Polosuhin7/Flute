@@ -15,7 +15,7 @@ import stores from '../../stores/stores';
 import { Theme } from '../../types/ITheme';
 import { IOrganizationShedule } from '../../types/organization/IOrganization';
 import { getGeoDistance } from '../../utils/getGeoDistance';
-import { isToday, textToOrganizationClosed } from '../../utils/orgnizationSheduleHelper';
+import { isToday, textToOrganizationClosed } from '../../utils/sheduleHelper';
 
 const {organization, app} = stores;
 
