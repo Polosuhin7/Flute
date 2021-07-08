@@ -9,7 +9,7 @@
         "yarn": "1.*"
       },
     "scripts": {
-        "bootstrap": "lerna bootstrap",
+        "bootstrap": "npx lerna bootstrap",
         "lerna": "lerna",
         "heroku-prebuild": "yarn bootstrap",
         "heroku-postbuild": "yarn build:web",
