@@ -11,7 +11,7 @@
     "build:android": "expo build:android -t apk",
     "build:ios": "expo build:ios -t archive",
     "build:web": "expo build:web && yarn after:build:web",
-    "after:build:web": "cd .. && cp -r ./mobile/web-build ./backend/public/",
+    "after:build:web": "cd .. && cp -r ./mobile/web-build ./backend/public/ && mv ./backend/public/web-build ./backend/public/web",
     "eject": "expo eject"
   },
   "dependencies": {

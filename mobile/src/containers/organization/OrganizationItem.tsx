@@ -166,7 +166,7 @@ const OrganizationItem: React.FC<any> = () => {
     };
     const onShare = () => {
         // TODO: Подумать как нормально сделать
-        let url = `${config.baseUrl}/web-build/index.html?organization_id=${activeOrganization.id}`
+        let url = `${config.baseUrl}/web/index.html?organization_id=${activeOrganization.id}`
         if(Platform.OS === 'web') {
             navigator?.share({title: activeOrganization.title, url})
             return;
