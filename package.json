@@ -14,8 +14,7 @@
         "heroku-postbuild": "yarn build:web",
         "postinstall": "yarn build:admin",
         "start": "cd backend && yarn start",
-        "develop": "npx lerna exec 'yarn develop' --scope backend",
-        "build:web": "npx lerna exec 'yarn build:web' --scope mobile",
-        "build:admin": "npx lerna exec 'yarn build' --scope backend"
+        "build:web": "cd mobile && yarn build:web",
+        "build:admin": "cd backend && yarn build"
     }
 }
