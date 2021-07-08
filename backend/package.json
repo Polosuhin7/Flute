@@ -8,7 +8,7 @@
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi",
-    "heroku-postbuild": "cd ../mobile && yarn build:web"
+    "heroku-postbuild": "pwd && cd mobile && yarn build:web"
   },
   "dependencies": {
     "knex": "0.21.18",
