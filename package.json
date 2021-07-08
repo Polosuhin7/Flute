@@ -10,7 +10,7 @@
       },
     "scripts": {
         "bootstrap": "lerna bootstrap",
-        "heroku-prebuild": "yarn add -g lerna && yarn bootstrap",
+        "heroku-prebuild": "yarn global add lerna && yarn bootstrap",
         "heroku-postbuild": "yarn build:web",
         "postinstall": "yarn build:admin",
         "start": "lerna exec 'yarn start' --scope backend",
