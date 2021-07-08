@@ -8,7 +8,7 @@
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi",
-    "heroku-prebuild": "ls",
+    "heroku-prebuild": "ls && cd .. && ls",
     "heroku-postbuild": "ls && cd .. && ls"
   },
   "dependencies": {
