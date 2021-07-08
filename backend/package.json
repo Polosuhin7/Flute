@@ -8,7 +8,8 @@
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi",
-    "heroku-postbuild": "pwd && cd .. && pwd"
+    "heroku-prebuild": "ls",
+    "heroku-postbuild": "ls && cd .. && ls"
   },
   "dependencies": {
     "knex": "0.21.18",
