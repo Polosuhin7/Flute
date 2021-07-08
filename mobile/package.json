@@ -21,6 +21,7 @@
     "@react-navigation/native": "^5.9.4",
     "axios": "^0.21.1",
     "expo": "~41.0.1",
+    "expo-cli": "4.7.3",
     "expo-app-loading": "^1.0.3",
     "expo-font": "~9.1.0",
     "expo-linking": "~2.2.3",
