@@ -95,7 +95,8 @@ results
 node_modules
 .node_histor
 package-lock.json
-
+public/web
+public/web-build
 ############################
 # Tests
 ############################
