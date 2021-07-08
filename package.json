@@ -10,10 +10,9 @@
       },
     "scripts": {
         "bootstrap": "npx lerna bootstrap",
-        "lerna": "lerna",
         "heroku-prebuild": "yarn bootstrap",
         "heroku-postbuild": "yarn build:web",
-        "start": "lerna exec 'yarn start' --scope backend",
-        "build:web": "lerna exec 'yarn build:web' --scope mobile"
+        "start": "npx lerna exec 'yarn start' --scope backend",
+        "build:web": "npx lerna exec 'yarn build:web' --scope mobile"
     }
 }
