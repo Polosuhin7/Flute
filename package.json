@@ -11,9 +11,10 @@
     "scripts": {
         "bootstrap": "npx lerna bootstrap",
         "heroku-prebuild": "yarn bootstrap",
-        "heroku-postbuild": "yarn build:web",
+        "heroku-postbuild": "yarn build:web && yarn build:admin",
         "start": "npx lerna exec 'yarn start' --scope backend",
         "develop": "npx lerna exec 'yarn develop' --scope backend",
-        "build:web": "npx lerna exec 'yarn build:web' --scope mobile"
+        "build:web": "npx lerna exec 'yarn build:web' --scope mobile",
+        "build:admin": "npx lerna exec 'yarn build' --scope backend"
     }
 }
