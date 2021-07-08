@@ -10,6 +10,7 @@
       },
     "scripts": {
         "bootstrap": "lerna bootstrap",
+        "heroku-prebuild": "yarn bootstrap",
         "heroku-postbuild": "yarn build:web",
         "start": "lerna exec 'yarn start' --scope backend",
         "build:web": "lerna exec 'yarn build:web' --scope mobile"
