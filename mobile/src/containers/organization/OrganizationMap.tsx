@@ -151,8 +151,6 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
             markers.push(marker)
 
             marker.addListener('click', () => {
-                clearMarkersSelect();
-                marker.setIcon(activeIcon);
                 organization.setActiveOrganization(_organization);
                 onOrganizationSelect(_organization, 'map');
             });
@@ -161,7 +159,6 @@ const OrganizationMap: React.FC<IOrganizationMapProps> = ({onOrganizationSelect}
                     center: {lat: map?.getCenter()?.lat() || 0, lng: map?.getCenter()?.lng() || 0},
                     zoom: map?.getZoom() || 8
                 })
-    
             }, 500))
         });
     }
